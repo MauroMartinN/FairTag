@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db: 
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=fairTag
+      - MYSQL_USER=fairTag
+      - MYSQL_PASSWORD=password
+    volumes:
+      - "./db:/docker-entrypoint-initdb.d"
+  www:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: php:apache
+    volumes:
+      - "./:/var/www/html"
+    ports:
+      - 80:80
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8001:80
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - PMA_USER=fairTag
+      - PMA_PASSWORD=password
