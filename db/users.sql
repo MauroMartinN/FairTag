@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db:3306
--- Tiempo de generación: 03-05-2025 a las 14:04:06
+-- Tiempo de generación: 04-05-2025 a las 21:01:40
 -- Versión del servidor: 9.3.0
 -- Versión de PHP: 8.2.27
 
@@ -31,16 +31,18 @@ CREATE TABLE `users` (
   `id` int NOT NULL,
   `name` varchar(15) NOT NULL,
   `email` varchar(60) NOT NULL,
-  `password` varchar(60) NOT NULL
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `rol_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES
-(1, 'pepe', 'pepe@gmail.com', '123456'),
-(2, 'andres', 'andres@gmail.com', '12345');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `rol_id`) VALUES
+(1, 'pepe', 'pepe@gmail.com', '$2y$10$v7TSqDjA5xdDWxdGZfAyHefvrBRaS0AZW1yQucjoAYSMzc871BPVW', 1),
+(2, 'andres', 'andres@gmail.com', '$2y$10$GQ62eq7MD2uWl3NBMklwCeM.Zz3YI0aWGU7UQOq.YYbfBprrgO26i', 1),
+(15, 'galepic', 'gona3737@gmail.com', '$2y$10$.zTYnq4.yPHEZH44M5Suu.jEaozY09JtMcSII6dd/K15O/Eb5fLDW', 1);
 
 --
 -- Índices para tablas volcadas
@@ -60,7 +62,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,29 +1,24 @@
+<?php
+$usuarioLogueado = isset($_SESSION['user']);
+echo "<script>console.log('Usuario logueado: " . ($usuarioLogueado ? 'Sí' : 'No') . "');</script>";
+?>
+
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <title>Ejemplo MVC con entidad y controller</title>
-
-        <meta charset="utf-8" />
-
-        <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="/assets/css/bootstrap-theme.min.css" />
-        <link rel="stylesheet" href="/assets/js/jquery-ui/jquery-ui.min.css" />
-        <link rel="stylesheet" href="/assets/css/style.css" />
-
-
-        <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-    </head>
-    <body>
-
-
-
-        <div class="container">
-            
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav ">
-                    <li class="active"><a href="index.php?c=Alumno">Alumnos</a></li>
-                    <li><a href="index.php?c=Curso">Cursos</a></li>
-                    <li><a href="index.php?c=Usuario&a=logout">Salir</a></li>
-                </ul>
-            </div><!--/.nav-collapse -->
+<head>
+    <title>FairTag</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div>
+        <div>
+            <ul>
+                <li><a href="index.php?c=User&a=index">Inicio</a></li>
+                <?php if ($usuarioLogueado): ?>
+                    <li><a href="index.php?c=User&a=logout">Salir</a></li>
+                <?php else: ?>
+                    <li><a href="index.php?c=User&a=login">Login</a></li>
+                <?php endif; ?>
+            </ul>
         </div>
+    </div>
