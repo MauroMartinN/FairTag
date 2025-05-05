@@ -9,43 +9,43 @@ class User {
     private string $rol_id;
  
 
-    public function getId(): int {
+    public function getId() {
         return $this->id;
     }
 
-    public function setId(int $id): void {
+    public function setId(int $id) {
         $this->id = $id;
     }
 
-    public function getName(): string {
+    public function getName() {
         return $this->name;
     }
 
-    public function setName(string $name): void {
+    public function setName(string $name) {
         $this->name = $name;
     }
 
-    public function getEmail(): string {
+    public function getEmail() {
         return $this->email;
     }
 
-    public function setEmail(string $email): void {
+    public function setEmail(string $email) {
         $this->email = $email;
     }
 
-    public function getPassword(): string {
+    public function getPassword() {
         return $this->password;
     }
 
-    public function setPassword(string $password): void {
+    public function setPassword(string $password) {
         $this->password = $password;
     }
 
-    public function getRolId(): string {
+    public function getRolId() {
         return $this->rol_id;
     }
 
-    public function setRolId(string $rol_id): void {
+    public function setRolId(string $rol_id) {
         $this->rol_id = $rol_id;
     }
 }

@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once '../model/userDAO.php';
 require_once '../model/entidades/user.php';
 
@@ -22,7 +21,7 @@ class UserController {
 
                 $existing = $this->model->obtenerPorEmail($email);
                 if ($existing) {
-                    $errorMessage = "Ya existe un usuario registrado con ese correo.";
+                    $errorMessage = "El correo ya está en uso.";
                 } else {
                     $user = new User();
                     $user->setName($name);
