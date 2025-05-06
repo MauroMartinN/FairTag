@@ -65,7 +65,7 @@ class UserController {
             $user = $this->model->obtenerPorEmail($email);
     
             if ($user && password_verify($password, $user->getPassword())) {
-                $_SESSION['user'] = $user;
+                $_SESSION['user_id'] = $user->getId();
 
                 if (isset($_POST['remember'])) {
                     setcookie('remembered_email', $_POST['email'], time() + (30 * 24 * 60 * 60), "/");

@@ -1,6 +1,5 @@
 <?php
-$usuarioLogueado = isset($_SESSION['user']);
-echo "<script>console.log('Usuario logueado: " . ($usuarioLogueado ? 'Sí' : 'No') . "');</script>";
+$usuarioLogueado = isset($_SESSION['user_id']);
 ?>
 
 <!DOCTYPE html>
@@ -16,6 +15,7 @@ echo "<script>console.log('Usuario logueado: " . ($usuarioLogueado ? 'Sí' : 'No
                 <li><a href="index.php?c=User&a=index">Inicio</a></li>
                 <?php if ($usuarioLogueado): ?>
                     <li><a href="index.php?c=User&a=logout">Salir</a></li>
+                    <li><a href="index.php?c=Post&a=crear">Crear Post</a></li>
                 <?php else: ?>
                     <li><a href="index.php?c=User&a=login">Login</a></li>
                 <?php endif; ?>
