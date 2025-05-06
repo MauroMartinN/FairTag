@@ -31,7 +31,7 @@ class PostController {
             $post->setImage($_FILES['image']['name']);
             $post->setGoogleLink($_POST['google_link']);
             $post->setUserId($_SESSION['user_id']); 
-            $post->setCreatedAt(date('Y-m-d H:i:s'));
+            $post->setCreatedAt(date('Y-m-d'));
 
             
             move_uploaded_file($_FILES['image']['tmp_name'], '../uploads/' . $_FILES['image']['name']);

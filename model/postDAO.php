@@ -79,7 +79,6 @@ class PostDAO {
 
     public function guardar(Post $post) {
         $stmt = $this->pdo->prepare("INSERT INTO posts (title, content, image, created_at, google_link, user_id, country) VALUES (:title, :content, :image, :created_at, :google_link, :user_id, :country)");
-        $post->setCreatedAt(date('Y-m-d H:i:s')); // Set the created_at to the current date and time
         $stmt->execute([
             'title' => $post->getTitle(),
             'content' => $post->getContent(),
