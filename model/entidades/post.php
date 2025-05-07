@@ -85,7 +85,6 @@ class Post {
 
             $this->latitude = $coords1[0];
             $this->longitude = $coords2[0];
-            //$this->fetchCountryFromCoordinates();
             return true;
         }
         return false;
@@ -106,7 +105,7 @@ class Post {
         return $this->country;
     }
 
-    private function fetchCountryFromCoordinates() { //API de OpenStreetMap gratuita, devuelve el país a partir de las coordenadas
+    public function fetchCountryFromCoordinates() { //API de OpenStreetMap gratuita, devuelve el país a partir de las coordenadas
         $url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={$this->latitude}&lon={$this->longitude}&zoom=5&addressdetails=1";
     
         $opts = [
