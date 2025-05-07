@@ -8,7 +8,11 @@
     <ul>
         <?php foreach ($posts as $post): ?>
             <li>
-                <h3><?= htmlspecialchars($post->getTitle()) ?></h3>
+                <h3>
+                    <a href="index.php?c=Post&a=ver&id=<?= $post->getId() ?>">
+                        <?= htmlspecialchars($post->getTitle()) ?>
+                    </a>
+                </h3>
                 <p><?= nl2br(htmlspecialchars($post->getContent())) ?></p>
                 <img src="uploads/<?= htmlspecialchars($post->getImage()) ?>" alt="Imagen del post" width="200">
                 <p>Publicado el: <?= $post->getCreatedAt() ?></p>

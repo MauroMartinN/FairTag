@@ -78,7 +78,10 @@ class PostDAO {
     }
 
     public function guardar(Post $post) {
-        $stmt = $this->pdo->prepare("INSERT INTO posts (title, content, image, created_at, google_link, user_id, country) VALUES (:title, :content, :image, :created_at, :google_link, :user_id, :country)");
+        $stmt = $this->pdo->prepare(
+            "INSERT INTO posts (title, content, image, created_at, google_link, user_id, country, latitude, longitude) 
+            VALUES (:title, :content, :image, :created_at, :google_link, :user_id, :country, :latitude, :longitude)"
+        );
         $stmt->execute([
             'title' => $post->getTitle(),
             'content' => $post->getContent(),
@@ -86,7 +89,9 @@ class PostDAO {
             'created_at' => $post->getCreatedAt(),
             'google_link' => $post->getGoogleLink(),
             'user_id' => $post->getUserId(),
-            'country' => $post->getCountry()
+            'country' => $post->getCountry(),
+            'latitude' => $post->getLatitude(),
+            'longitude' => $post->getLongitude()
         ]);
     }
 

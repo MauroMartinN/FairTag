@@ -10,7 +10,7 @@ class Post {
     private string $latitude;
     private string $longitude;
     private int $user_id;
-    private string $country="Pendiente de implementar";
+    private string $country;
 
     public function getId() {
         return $this->id;
@@ -85,7 +85,7 @@ class Post {
 
             $this->latitude = $coords1[0];
             $this->longitude = $coords2[0];
-            //fetchCountryFromCoordinates(); PENDIENTE DE IMPLEMENTAR
+            //$this->fetchCountryFromCoordinates();
             return true;
         }
         return false;
@@ -112,7 +112,8 @@ class Post {
         $opts = [
             "http" => [
                 "method" => "GET",
-                "header" => "User-Agent: MyApp/1.0"
+                //"header" => "User-Agent: MyApp/1.0"
+                "header" => "User-Agent: MyApp/1.0\r\nAccept-Language: es"
             ]
         ];
 
