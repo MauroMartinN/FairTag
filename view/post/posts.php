@@ -14,7 +14,7 @@
                     </a>
                 </h3>
                 <p><?= nl2br(htmlspecialchars($post->getContent())) ?></p>
-                <img src="uploads/<?= htmlspecialchars($post->getImage()) ?>" alt="Imagen del post" width="200">
+                <img src="postsImg/<?= htmlspecialchars($post->getImage()) ?>" alt="Imagen del post" width="200">
                 <p>Publicado el: <?= $post->getCreatedAt() ?></p>
                 <p>Ubicación: <?= htmlspecialchars($post->getCountry()) ?></p>
                 <p><a href="<?= htmlspecialchars($post->getGoogleLink()) ?>" target="_blank">Ver en Google Maps</a></p>

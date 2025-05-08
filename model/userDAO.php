@@ -24,6 +24,7 @@ class UserDAO {
             $user->setEmail($data['email']);
             $user->setPassword($data['password']);
             $user->setRolId($data['rol_id']);
+            $user->setImage($data['image']);
             return $user;
         }
         return null;
@@ -51,6 +52,26 @@ class UserDAO {
             $user->setEmail($data['email']);
             $user->setPassword($data['password']);
             $user->setRolId($data['rol_id']);
+            $user->setImage($data['image']);
+            return $user;
+        }
+
+        return null;
+    }
+
+    public function obtenerPorNombre(string $name) {
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE name = ?");
+        $stmt->execute([$name]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($data) {
+            $user = new User();
+            $user->setId($data['id']);
+            $user->setName($data['name']);
+            $user->setEmail($data['email']);
+            $user->setPassword($data['password']);
+            $user->setRolId($data['rol_id']);
+            $user->setImage($data['image']);
             return $user;
         }
 
@@ -70,6 +91,7 @@ class UserDAO {
             $user->setEmail($row['email']);
             $user->setPassword($row['password']);
             $user->setRolId($row['rol_id']);
+            $user->setImage($row['image']);
             $users[] = $user;
         }
 
@@ -89,24 +111,24 @@ class UserDAO {
             $user->setEmail($row['email']);
             $user->setPassword($row['password']);
             $user->setRolId($row['rol_id']);
+            $user->setImage($row['image']);
             $users[] = $user;
         }
 
         return $users;
     }
 
-    public function update(User $user) {
-        $stmt = $this->pdo->prepare("UPDATE users SET name = :name, email = :email, password = :password, rol_id = :rol_id WHERE id = :id");
+    public function actualizar(User $user) {
+        $stmt = $this->pdo->prepare("UPDATE users SET name = :name, rol_id = :rol_id, image = :image WHERE id = :id");
         $stmt->execute([
             'name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'password' => password_hash($user->getPassword(), PASSWORD_DEFAULT),
             'rol_id' => $user->getRolId(),
+            'image' => $user->getImage(),
             'id' => $user->getId()
         ]);
     }
 
-    public function delete(int $id) {
+    public function eliminar(int $id) {
         $stmt = $this->pdo->prepare("DELETE FROM users WHERE id = ?");
         $stmt->execute([$id]);
     }

@@ -1,3 +1,0 @@
-
-<h1> REGISTRESE O INICIE SESIÓN </h1>
-

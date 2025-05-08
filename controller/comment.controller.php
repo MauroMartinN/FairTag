@@ -22,8 +22,6 @@ class CommentController {
             $comment->setUserId($_POST['user_id']);
             $comment->setPostId($_POST['post_id']);
             $comment->setCreatedAt(date('Y-m-d H:i:s'));
-            $comment->setUserName($_POST['user_name']);
-            // $comment->setUserImage($_POST['user_image']);
             $this->model->guardar($comment);
             header("Location: index.php?c=Post&a=ver&id=" . $comment->getPostId());
         }

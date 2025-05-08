@@ -32,12 +32,16 @@ class PostController {
             $userDao = new UserDAO();
             $user = $userDao->obtenerPorId($user_id);
             $userName = $user->getName();
-
-
-
+            $userImage = $user->getImage();
 
             require_once '../view/header.php';
             require_once '../view/post/ver.php';
+
+            include '../view/comment/lista.php';
+            if (isset($_SESSION['user_id'])) {
+                include '../view/comment/crear.php';
+            }
+
             require_once '../view/footer.php';
         } else {
             header("Location: index.php?c=Post&a=index");
@@ -61,9 +65,7 @@ class PostController {
             $post->setCreatedAt(date('Y-m-d'));
             $post->fetchCountryFromCoordinates();
 
-
-            
-            move_uploaded_file($_FILES['image']['tmp_name'], 'uploads/' . $_FILES['image']['name']);
+            move_uploaded_file($_FILES['image']['tmp_name'], 'postsImg/' . $_FILES['image']['name']);
 
             $this->model->guardar($post);
             header("Location: index.php?c=Post&a=index");

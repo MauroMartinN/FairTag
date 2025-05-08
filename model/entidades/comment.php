@@ -5,8 +5,6 @@ class Comment {
     private string $content;
     private string $created_at;
     private int $user_id;
-    private string $user_name;
-    //private string $user_image; pendiente
     private int $post_id;
 
     public function getId() {

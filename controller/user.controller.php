@@ -7,6 +7,10 @@ class UserController {
     private $model;
 
     public function __construct() {
+        // if (!isset($_SESSION['user_id'])) {
+        //     echo "<script>alert('Debes iniciar sesión para acceder a esta página.');</script>";
+        //     header("Location: index.php?c=User&a=login");
+        // }
         $this->model = new UserDAO();
     }
 
@@ -19,15 +23,21 @@ class UserController {
                 $password = trim($_POST['password']);
                 $rol_id   = 1;
 
-                $existing = $this->model->obtenerPorEmail($email);
-                if ($existing) {
+                $existingE = $this->model->obtenerPorEmail($email);
+                $existingN = $this->model->obtenerPorNombre($name);
+
+                if ($existingE) {
                     $errorMessage = "El correo ya está en uso.";
+                } else if  ($existingN) {
+                    $errorMessage = "El nombre de usuario ya está en uso.";
+                
                 } else {
                     $user = new User();
                     $user->setName($name);
                     $user->setEmail($email);
                     $user->setPassword($password);
                     $user->setRolId($rol_id);
+                    $user->setImage("default.png");
 
                     $this->model->registrar($user);
 
@@ -47,19 +57,28 @@ class UserController {
         require_once '../view/footer.php';
     }
 
-    // public function editar() {
-    //     $user = new User();
+    public function perfil() {
+        $user = new User();
+        $userId = $_SESSION['user_id'];
+        $user = $this->model->obtenerPorId($userId);
+        require_once '../view/header.php';
+        require_once '../view/user/perfil.php';
+        require_once '../view/footer.php';
+    }
 
-    //     if (isset($_REQUEST['id'])) {
-    //         $user = $this->model->obtenerPorId($_REQUEST['id']); 
-    //     }
-    // }
+    public function editar() {
+        $user = new User();
+        $userId = $_SESSION['user_id'];
+        $user = $this->model->obtenerPorId($userId);
+        require_once '../view/header.php';
+        require_once '../view/user/editar.php';
+        require_once '../view/footer.php';
+    }
 
     public function login() {
         $error = null;
     
         if ($_POST) {
-        
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
             $user = $this->model->obtenerPorEmail($email);
@@ -89,5 +108,44 @@ class UserController {
         header("Location: index.php?c=User");
         exit();
     }
+
+    public function eliminar() {
+        if (isset($_GET['id'])) {
+            $this->model->eliminar($_GET['id']);
+            header("Location: index.php?c=User&a=index");
+        }
+    }
+
+    public function actualizar() {
+        if ($_POST) {
+            $name = $_POST['name'];
     
+            $existingN = $this->model->obtenerPorNombre($name);
+    
+            if ($existingN) {
+                $errorMessage = "El nombre de usuario ya está en uso.";
+            }
+    
+            $user = $this->model->obtenerPorId($_SESSION['user_id']);
+            $user->setName($name);
+    
+            if (!empty($_POST['password'])) {
+                $user->setPassword($_POST['password']);
+            }
+    
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $filename = basename($_FILES['image']['name']);
+                move_uploaded_file($_FILES['image']['tmp_name'], 'userImg/' . $filename);
+                $user->setImage($filename);
+            }
+    
+            $this->model->actualizar($user);
+    
+            header("Location: index.php?c=User&a=perfil");
+            exit;
+        }
+    }
+    
+
+
 }

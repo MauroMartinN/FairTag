@@ -24,8 +24,6 @@ class CommentDAO {
             $comment->setCreatedAt($data['created_at']);
             $comment->setUserId($data['user_id']);
             $comment->setPostId($data['post_id']);
-            $comment->setUserName($data['user_name']);
-            // $comment->setUserImage($data['user_image']);
             return $comment;
         }
 
@@ -45,8 +43,6 @@ class CommentDAO {
             $comment->setCreatedAt($row['created_at']);
             $comment->setUserId($row['user_id']);
             $comment->setPostId($row['post_id']);
-            $comment->setUserName($row['user_name']);
-            // $comment->setUserImage($row['user_image']);
             $comments[] = $comment;
         }
 
@@ -73,17 +69,13 @@ class CommentDAO {
     }
 
     public function guardar(Comment $comment) {
-        $stmt = $this->pdo->prepare(
-            "INSERT INTO comments (content, created_at, user_id, post_id, user_name) 
-            VALUES (:content, :created_at, :user_id, :post_id, :user_name)"
-        );
+        $stmt = $this->pdo->prepare("INSERT INTO comments (content, created_at, user_id, post_id) VALUES (:content, :created_at, :user_id, :post_id)");
+        
         $stmt->execute([
             'content' => $comment->getContent(),
             'created_at' => $comment->getCreatedAt(),
             'user_id' => $comment->getUserId(),
-            'post_id' => $comment->getPostId(),
-            'user_name' => $comment->getUserName()
-            // 'user_image' => $comment->getUserImage()
+            'post_id' => $comment->getPostId()
         ]);
     }
 
