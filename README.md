@@ -1,5 +1,5 @@
 # FairTag
-Proeycto final
+Proyecto final
 
 ## Licencia
 

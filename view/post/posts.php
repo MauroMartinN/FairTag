@@ -7,6 +7,9 @@
 <?php else: ?>
     <ul>
         <?php foreach ($posts as $post): ?>
+            <?php 
+                $userName = $userDAO->obtemerNombrePorId($post->getUserId()); 
+            ?>
             <li>
                 <h3>
                     <a href="index.php?c=Post&a=ver&id=<?= $post->getId() ?>">
@@ -16,6 +19,8 @@
                 <p><?= nl2br(htmlspecialchars($post->getContent())) ?></p>
                 <img src="postsImg/<?= htmlspecialchars($post->getImage()) ?>" alt="Imagen del post" width="200">
                 <p>Publicado el: <?= $post->getCreatedAt() ?></p>
+                <p>Por: <?= $userName ?></p>
+
                 <p>Ubicación: <?= htmlspecialchars($post->getCountry()) ?></p>
                 <p><a href="<?= htmlspecialchars($post->getGoogleLink()) ?>" target="_blank">Ver en Google Maps</a></p>
                 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $post->getUserId()): ?>

@@ -28,6 +28,9 @@
                 <img src="userImg/<?= htmlspecialchars($userImage) ?>" alt="Imagen de usuario" width="100">
                 <p>Autor: <?= $userName ?></p>
                 <?= nl2br(htmlspecialchars($comment->getContent())) ?>
+                <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $comment->getUserId()): ?>
+                    <a href="index.php?c=Comment&a=eliminar&id=<?= $comment->getId() ?>&post_id=<?= $postId ?>" onclick="return confirm('¿Seguro que quieres eliminar este comentario?')">Eliminar</a>
+                <?php endif; ?>
             </li>
         <?php endforeach; ?>
     </ul>

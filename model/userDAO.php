@@ -132,4 +132,16 @@ class UserDAO {
         $stmt = $this->pdo->prepare("DELETE FROM users WHERE id = ?");
         $stmt->execute([$id]);
     }
+
+    public function obtemerNombrePorId(int $id) {
+        $stmt = $this->pdo->prepare("SELECT name FROM users WHERE id = ?");
+        $stmt->execute([$id]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($data) {
+            return $data['name'];
+        }
+
+        return null;
+    }
 }

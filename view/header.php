@@ -7,6 +7,15 @@ $usuarioLogueado = isset($_SESSION['user_id']);
 <head>
     <title>FairTag</title>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+  .leaflet-control-attribution {
+    font-size: 14px;       /* Aumenta el tamaño de letra */
+    padding: 8px 12px;      /* Más espacio alrededor */
+    background: rgba(255, 255, 255, 0.8); /* Fondo más visible */
+    color: #000;            /* Texto oscuro para más contraste */
+  }
+</style>
 </head>
 <body>
     <div>

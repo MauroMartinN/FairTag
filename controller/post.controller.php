@@ -14,6 +14,7 @@ class PostController {
 
     public function index() {
         $posts = $this->model->obtenerTodos();
+        $userDAO = new UserDAO();
         
         require_once '../view/header.php';
         require_once '../view/post/posts.php';

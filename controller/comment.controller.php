@@ -30,7 +30,7 @@ class CommentController {
     public function eliminar() {
         if (isset($_GET['id'])) {
             $this->model->eliminar($_GET['id']);
-            header("Location: index.php?c=Comment&a=index&post_id=" . $_GET['post_id']);
+            header("Location: index.php?c=Post&a=ver&id=" . $_GET['post_id']);
         }
     }
 }
