@@ -1,10 +1,13 @@
-<div id="map" style="height: 600px;"></div>
+<h1>Mapa de países</h1>
+<p>Selecciona el país sobre el que quieres buscar información.</p>
+
+<div id="map" style="height: 80vh;"></div>
+
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
     let map = L.map('map', {
-        minZoom: 2,
+        minZoom: 3,
         maxZoom: 10,
         maxBounds: [[-85, -180], [85, 180]]
     }).setView([20, 0], 2);
@@ -32,18 +35,20 @@
     // }).addTo(map);
 
 map.on('click', function (e) {
-      let lat = e.latlng.lat;
-      let lon = e.latlng.lng;
+    let lat = e.latlng.lat;
+    let lon = e.latlng.lng;
 
-      fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-        .then(response => response.json())
-        .then(data => {
-          let country = data.address.country;
-          alert("Estás en: " + country);
-        })
-        .catch(err => {
-          alert("No se pudo obtener el país.");
-        });
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+    .then(response => response.json())
+    .then(data => {
+        let country = data.address.country;
+        if(confirm("Has seleccionado " + country + "?"))
+            window.location.href = `/index.php?c=pais&a=ver&lat=${lat}&lon=${lon}`;
+        else return false;
+    })
+    .catch(err => {
+        alert("No se pudo obtener el país.");
     });
+});
   
 </script>

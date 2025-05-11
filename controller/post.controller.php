@@ -64,7 +64,6 @@ class PostController {
             $post->setGoogleLink($_POST['google_link']);
             $post->setUserId($_SESSION['user_id']); 
             $post->setCreatedAt(date('Y-m-d'));
-            $post->fetchCountryFromCoordinates();
 
             move_uploaded_file($_FILES['image']['tmp_name'], 'postsImg/' . $_FILES['image']['name']);
 

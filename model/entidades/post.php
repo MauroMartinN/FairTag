@@ -104,29 +104,6 @@ class Post {
     public function getCountry() {
         return $this->country;
     }
-
-    public function fetchCountryFromCoordinates() { //API de OpenStreetMap gratuita, devuelve el país a partir de las coordenadas
-        $url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={$this->latitude}&lon={$this->longitude}&zoom=5&addressdetails=1";
-    
-        $opts = [
-            "http" => [
-                "method" => "GET",
-                //"header" => "User-Agent: MyApp/1.0"
-                "header" => "User-Agent: MyApp/1.0\r\nAccept-Language: es"
-            ]
-        ];
-
-        $context = stream_context_create($opts);
-        $response = file_get_contents($url, false, $context);
-    
-        if ($response) {
-            $data = json_decode($response, true);
-            if (isset($data['address']['country'])) {
-                $this->setCountry($data['address']['country']);
-                return true;
-            }
-        }
-    
-        return false;
-    }
 }
+
+    

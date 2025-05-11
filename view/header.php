@@ -21,7 +21,7 @@ $usuarioLogueado = isset($_SESSION['user_id']);
     <div>
         <div>
             <ul>
-                <li><a href="index.php?c=User&a=index">Inicio</a></li>
+                <li><a href="index.php?c=Pais&a=index">Inicio</a></li>
                 <?php if ($usuarioLogueado): ?>
                     <li><a href="index.php?c=User&a=logout">Salir</a></li>
                     <li><a href="index.php?c=Post&a=crear">Crear Post</a></li>

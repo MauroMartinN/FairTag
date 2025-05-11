@@ -2,7 +2,8 @@
 
 class pais {
     private int $id;
-    private string $nombre;
+    private string $name;
+
 
     public function getId() {
         return $this->id;
@@ -12,11 +13,11 @@ class pais {
         $this->id = $id;
     }
 
-    public function getNombre() {
-        return $this->nombre;
+    public function getName() {
+        return $this->name;
     }
 
-    public function setNombre(string $nombre) {
-        $this->nombre = $nombre;
+    public function setName(string $name) {
+        $this->name = $name;
     }
 }
