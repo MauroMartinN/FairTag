@@ -29,12 +29,13 @@ class PostController {
             $commentDao = new CommentDAO();
             $comments = $commentDao->obtenerPorPostId($post->getId());
 
-            $user_id = $_SESSION['user_id'];
-            $userDao = new UserDAO();
-            $user = $userDao->obtenerPorId($user_id);
-            $userName = $user->getName();
-            $userImage = $user->getImage();
-
+            if (isset($_SESSION['user_id'])) {
+                $user_id = $_SESSION['user_id'];
+                $userDao = new UserDAO();
+                $user = $userDao->obtenerPorId($user_id);
+                $userName = $user->getName();
+                $userImage = $user->getImage();
+            } 
             require_once '../view/header.php';
             require_once '../view/post/ver.php';
 
@@ -64,6 +65,7 @@ class PostController {
             $post->setGoogleLink($_POST['google_link']);
             $post->setUserId($_SESSION['user_id']); 
             $post->setCreatedAt(date('Y-m-d'));
+            $post->setType($_POST['type']);
 
             move_uploaded_file($_FILES['image']['tmp_name'], 'postsImg/' . $_FILES['image']['name']);
 

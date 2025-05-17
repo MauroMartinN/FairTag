@@ -22,6 +22,19 @@
     </div>
 
     <div>
+        <select name="type" required>
+            <option value="monumento">Monumento histórico</option>
+            <option value="museo">Museo</option>
+            <option value="playa">Playa</option>
+            <option value="montaña">Montaña / Sendero</option>
+            <option value="parque">Parque o espacio natural</option>
+            <option value="zona_comercial">Zona comercial / Mercado</option>
+            <option value="mirador">Mirador</option>
+            <option value="barrio_popular">Barrio pintoresco</option>
+            <option value="otro">Otro</option>
+        </select>
+    </div>
+
         <button type="submit">Guardar</button>
     </div>
 </form>

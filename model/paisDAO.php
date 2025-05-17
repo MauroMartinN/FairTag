@@ -1,6 +1,7 @@
 <?php
 
 require_once 'entidades/pais.php';
+require_once 'entidades/post.php';
 
 class PaisDAO {
     private $pdo;
@@ -65,11 +66,28 @@ class PaisDAO {
     }
 
     public function obtenerPosts(int $id) {
-        $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE country_id = ?");
+        $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE country = ?");
         $stmt->execute([$id]);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        return $data;
+        $posts = [];
+        foreach ($data as $row) {
+            $post = new Post();
+            $post->setId($row['id']);
+            $post->setTitle($row['title']);
+            $post->setContent($row['content']);
+            $post->setImage($row['image']);
+            $post->setCreatedAt($row['created_at']);
+            $post->setGoogleLink($row['google_link']);
+            $post->setLatitude($row['latitude']);
+            $post->setLongitude($row['longitude']);
+            $post->setCountry($row['country']);
+            $post->setUserId($row['user_id']);
+            $post->setType($row['type']);
+            $posts[] = $post;
+        }
+
+        return $posts;
     }
 
 }

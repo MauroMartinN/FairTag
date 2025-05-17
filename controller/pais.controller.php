@@ -20,6 +20,9 @@ class PaisController {
         $lon = $_GET['lon'] ?? null;
         $paisNombre = $this->fetchCountryFromCoordinates($lat, $lon);
 
+        if (!$paisNombre) header('Location: index.php?controller=pais&action=index');
+            
+
         $pais = $this->model->obtenerPorNombre($paisNombre);
 
         if (!$pais) {
@@ -29,20 +32,28 @@ class PaisController {
             
         } else {
             $posts = $this->model->obtenerPosts($pais->getId());
+            foreach ($posts as $post) {
+            }
         }
 
         require_once '../view/header.php';
         include_once '../view/pais/ver.php';
         require_once '../view/footer.php';
     }
+        
 
+    /**
+     * Obtiene el nombre del país a partir de coordenadas geográficas (latitud y longitud).
+     * 
+     * Esta función hace una petición HTTP a la API de Nominatim (OpenStreetMap) para
+     * obtener datos geográficos a partir de coordenadas.
+     */
     private function fetchCountryFromCoordinates(String $lat, String $lon) {
         $url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={$lat}&lon={$lon}&zoom=5&addressdetails=1";
     
         $opts = [
             "http" => [
                 "method" => "GET",
-                //"header" => "User-Agent: MyApp/1.0"
                 "header" => "User-Agent: MyApp/1.0\r\nAccept-Language: es"
             ]
         ];

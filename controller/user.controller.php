@@ -91,7 +91,7 @@ class UserController {
                 } else {
                     setcookie('remembered_email', '', time() - 3600, "/");
                 }
-                header("Location: index.php?c=User");
+                header("Location: Pais.php?c=index");
                 exit();
             } else {
                 $error = "Email o contraseña incorrectos";

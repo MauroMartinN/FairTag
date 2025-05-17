@@ -27,6 +27,7 @@ class PostDAO {
             $post->setGoogleLink($data['google_link']);
             $post->setUserId($data['user_id']);
             $post->setCountry($data['country']);
+            $post->setType($data['type']);
             return $post;
         }
 
@@ -48,6 +49,7 @@ class PostDAO {
             $post->setCreatedAt($row['created_at']);
             $post->setGoogleLink($row['google_link']);
             $post->setCountry($row['country']);
+            $post->setType($row['type']);
             $posts[] = $post;
         }
 
@@ -70,6 +72,7 @@ class PostDAO {
             $post->setGoogleLink($row['google_link']);
             $post->setUserId($row['user_id']);
             $post->setCountry($row['country']);
+            $post->setType($row['type']);
 
             $posts[] = $post;
         }
@@ -79,8 +82,8 @@ class PostDAO {
 
     public function guardar(Post $post) {
         $stmt = $this->pdo->prepare(
-            "INSERT INTO posts (title, content, image, created_at, google_link, user_id, country, latitude, longitude) 
-            VALUES (:title, :content, :image, :created_at, :google_link, :user_id, :country, :latitude, :longitude)"
+            "INSERT INTO posts (title, content, image, created_at, google_link, user_id, country, latitude, longitude, type) 
+            VALUES (:title, :content, :image, :created_at, :google_link, :user_id, :country, :latitude, :longitude, :type)"
         );
         $stmt->execute([
             'title' => $post->getTitle(),
@@ -91,7 +94,8 @@ class PostDAO {
             'user_id' => $post->getUserId(),
             'country' => $post->getCountry(),
             'latitude' => $post->getLatitude(),
-            'longitude' => $post->getLongitude()
+            'longitude' => $post->getLongitude(),
+            'type' => $post->getType()
         ]);
     }
 

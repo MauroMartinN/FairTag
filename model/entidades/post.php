@@ -11,6 +11,7 @@ class Post {
     private string $longitude;
     private int $user_id;
     private string $country;
+    private string $type;
 
     public function getId() {
         return $this->id;
@@ -65,8 +66,16 @@ class Post {
         return $this->latitude;
     }
 
+    public function setLatitude($latitude) {
+        $this->latitude = $latitude;
+    }
+
     public function getLongitude() {
         return $this->longitude;
+    }
+
+    public function setLongitude($longitude) {
+        $this->longitude = $longitude;
     }
 
     public function getUserId() {
@@ -75,6 +84,14 @@ class Post {
 
     public function setUserId($user_id) {
         $this->user_id = $user_id;
+    }
+
+    public function getType() {
+        return $this->type;
+    }
+
+    public function setType($type) {
+        $this->type = $type;
     }
 
     private function extractCoordinatesFromGoogleLink() {
