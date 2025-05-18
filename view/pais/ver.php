@@ -11,6 +11,11 @@
         background: rgba(255, 255, 255, 0.8); /* Fondo más visible */
         color: #000;            /* Texto oscuro para más contraste */
     }
+
+    .popup {
+    min-width: 200px; /* Puedes ajustar esto */
+    font-size: 16px;
+}
 </style>
 
 <h1><?= $paisNombre ?></h1>
@@ -45,7 +50,12 @@ foreach ($limitedPosts as $post):
     $type = $post->getType();
     $id = $post->getId();
     $link = "index.php?c=Post&a=ver&id=$id";
-    $popupContent = "<strong>$title</strong><br>Tipo: $type<br><a href='$link'>Ver</a>";
+    $popupContent = "
+        <div class='popup'>
+            <strong>$title</strong><br>
+            Tipo: $type<br>
+            <a href='$link'>Ver</a>
+        </div>";
 ?>
     marker = L.marker([<?= $postLat ?>, <?= $postLon ?>]).bindPopup(`<?= $popupContent ?>`);
     marker.addTo(map);

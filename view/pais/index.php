@@ -31,35 +31,22 @@
         noWrap: true,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+    
+    map.on('click', function (e) {
+        let lat = e.latlng.lat;
+        let lon = e.latlng.lng;
 
-  // Marcador
-//   L.marker([40.4168, -3.7038]).addTo(map)
-//     .bindPopup('Madrid')
-//     .openPopup();
-
-    // circulo
-    // let circle = L.circle([51.508, -0.11], {
-    //     radius: 500,
-    //     color: "red",
-    //     fillColor: "#f03",
-    //     fillOpacity: 0.5
-    // }).addTo(map);
-
-map.on('click', function (e) {
-    let lat = e.latlng.lat;
-    let lon = e.latlng.lng;
-
-    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-    .then(response => response.json())
-    .then(data => {
-        let country = data.address.country;
-        if(confirm("Has seleccionado " + country + "?"))
-            window.location.href = `/index.php?c=pais&a=ver&lat=${lat}&lon=${lon}`;
-        else return false;
-    })
-    .catch(err => {
-        alert("No se pudo obtener el país.");
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+        .then(response => response.json())
+        .then(data => {
+            let country = data.address.country;
+            if(confirm("Has seleccionado " + country + "?"))
+                window.location.href = `/index.php?c=pais&a=ver&lat=${lat}&lon=${lon}`;
+            else return false;
+        })
+        .catch(err => {
+            alert("No se pudo obtener el país.");
+        });
     });
-});
-  
+    
 </script>

@@ -1,0 +1,33 @@
+<?php
+require_once '../model/notificacionDAO.php';
+
+class NotificacionController {
+    private $model;
+
+    public function __construct() {
+        $this->model = new NotificacionDAO();
+    }
+
+    public function index() {
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: index.php?c=User&a=login");
+            exit();
+        }
+
+        $userId = $_SESSION['user_id'];
+        $notificaciones = $this->model->obtenerPorUsuario($userId);
+
+        $this->model->marcarTodasComoLeidas($userId);
+
+        require_once '../view/header.php';
+        require_once '../view/notificacion/index.php';
+        require_once '../view/footer.php';
+    }
+
+    public function eliminar() {
+        if (isset($_GET['id'])) {
+            $this->model->eliminar($_GET['id']);
+        }
+        header("Location: index.php?c=Notificacion&a=index");
+    }
+}

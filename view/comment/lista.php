@@ -3,6 +3,12 @@
     <ul>
         <?php foreach ($comments as $comment): ?>
             <?php
+
+                $userId = $comment->getUserId();
+                $user = $userDAO->obtenerPorId($userId);
+                $userName = $user->getName();
+                $userImage = $user->getImage();
+                
                 $createdAt = new DateTime($comment->getCreatedAt());
                 $now = new DateTime();
                 $interval = $now->diff($createdAt);

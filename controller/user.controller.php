@@ -7,10 +7,6 @@ class UserController {
     private $model;
 
     public function __construct() {
-        // if (!isset($_SESSION['user_id'])) {
-        //     echo "<script>alert('Debes iniciar sesión para acceder a esta página.');</script>";
-        //     header("Location: index.php?c=User&a=login");
-        // }
         $this->model = new UserDAO();
     }
 
@@ -91,7 +87,7 @@ class UserController {
                 } else {
                     setcookie('remembered_email', '', time() - 3600, "/");
                 }
-                header("Location: Pais.php?c=index");
+                header("Location: index.php?c=Pais&a=index");
                 exit();
             } else {
                 $error = "Email o contraseña incorrectos";
@@ -105,14 +101,14 @@ class UserController {
 
     public function logout() {
         session_destroy();
-        header("Location: index.php?c=User");
+        header("Location: index.php?c=Pais&a=index");
         exit();
     }
 
     public function eliminar() {
         if (isset($_GET['id'])) {
             $this->model->eliminar($_GET['id']);
-            header("Location: index.php?c=User&a=index");
+            header("Location: index.php?c=Pais&a=index");
         }
     }
 

@@ -29,6 +29,7 @@ class PaisController {
             $pais = new Pais();
             $pais->setName($paisNombre);
             $this->model->añadir($pais);
+            $posts=[];
             
         } else {
             $posts = $this->model->obtenerPosts($pais->getId());

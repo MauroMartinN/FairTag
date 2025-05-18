@@ -25,17 +25,15 @@ class PostController {
         if (isset($_GET['id'])) {
             $post = $this->model->obtenerPorId($_GET['id']);
             $postId = $post->getId();
+            $userId = $post->getUserId();
+
+            $userDAO = new UserDAO();
+            $user = $userDAO->obtenerPorId($userId);
+            $autor = $user->getName();
 
             $commentDao = new CommentDAO();
             $comments = $commentDao->obtenerPorPostId($post->getId());
 
-            if (isset($_SESSION['user_id'])) {
-                $user_id = $_SESSION['user_id'];
-                $userDao = new UserDAO();
-                $user = $userDao->obtenerPorId($user_id);
-                $userName = $user->getName();
-                $userImage = $user->getImage();
-            } 
             require_once '../view/header.php';
             require_once '../view/post/ver.php';
 
@@ -51,6 +49,12 @@ class PostController {
     }
 
     public function crear() {
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: index.php?c=User&a=login");
+            return;
+        }
+
+
         require_once '../view/header.php';
         require_once '../view/post/crear.php';
         require_once '../view/footer.php';

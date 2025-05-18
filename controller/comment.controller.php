@@ -2,6 +2,8 @@
 
 require_once '../model/entidades/Comment.php';
 require_once '../model/CommentDAO.php';
+require_once '../model/PostDAO.php';
+require_once '../model/notificacionDAO.php';
 
 class CommentController {
 
@@ -23,7 +25,23 @@ class CommentController {
             $comment->setPostId($_POST['post_id']);
             $comment->setCreatedAt(date('Y-m-d H:i:s'));
             $this->model->guardar($comment);
+
+            $postDAO = new PostDAO();
+            $post = $postDAO->obtenerPorId($comment->getPostId());
+
+            if ($post) {
+                $notification = new Notificacion();
+                $notification->setUserId($post->getUserId());
+                $notification->setPostId($post->getId());
+                $notification->setIsRead(false);
+                $notification->setMessage("Nuevo comentario en tu post: " . substr($comment->getContent(), 0, 50) . "...");
+
+                $notificationDAO = new NotificacionDAO();
+                $notificationDAO->guardar($notification);
+            }
+
             header("Location: index.php?c=Post&a=ver&id=" . $comment->getPostId());
+            exit();
         }
     }
 
@@ -31,6 +49,7 @@ class CommentController {
         if (isset($_GET['id'])) {
             $this->model->eliminar($_GET['id']);
             header("Location: index.php?c=Post&a=ver&id=" . $_GET['post_id']);
+            exit();
         }
     }
 }
