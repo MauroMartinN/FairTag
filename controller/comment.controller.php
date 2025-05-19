@@ -4,6 +4,8 @@ require_once '../model/entidades/Comment.php';
 require_once '../model/CommentDAO.php';
 require_once '../model/PostDAO.php';
 require_once '../model/notificacionDAO.php';
+require_once '../model/denunciaComentarioDAO.php';
+require_once '../model/entidades/denunciaComentario.php';
 
 class CommentController {
 
@@ -50,6 +52,26 @@ class CommentController {
             $this->model->eliminar($_GET['id']);
             header("Location: index.php?c=Post&a=ver&id=" . $_GET['post_id']);
             exit();
+        }
+    }
+
+    public function denunciar() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $comentarioId = $_POST['comentario_id'];
+            $usuarioId = $_SESSION['user_id'];
+            $motivo = $_POST['motivo'];
+
+            $denuncia = new DenunciaComentario();
+            $denuncia->setComentarioId($comentarioId);
+            $denuncia->setUsuarioId($usuarioId);
+            $denuncia->setMotivo($motivo);
+            $denuncia->setFecha(date('Y-m-d H:i:s'));
+
+            $dao = new DenunciaComentarioDAO();
+            $dao->guardar($denuncia);
+
+            header("Location: index.php?c=Post&a=ver&id=" . $_POST['post_id']);
+            exit;
         }
     }
 }

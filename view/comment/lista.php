@@ -37,9 +37,39 @@
                 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $comment->getUserId()): ?>
                     <a href="index.php?c=Comment&a=eliminar&id=<?= $comment->getId() ?>&post_id=<?= $postId ?>" onclick="return confirm('¿Seguro que quieres eliminar este comentario?')">Eliminar</a>
                 <?php endif; ?>
+                <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != $comment->getUserId()): ?>
+                    <button onclick="abrirModal(<?= $comment->getId() ?>)">Denunciar</button>
+                <?php endif; ?>
             </li>
         <?php endforeach; ?>
+        
     </ul>
 <?php else: ?>
     <p>No hay comentarios todavía.</p>
 <?php endif; ?>
+
+
+<div id="modalDenuncia" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;">
+    <div style="background:#fff; padding:20px; width:300px; margin:100px auto; border-radius:8px; position:relative;">
+        <h4>Denunciar comentario</h4>
+        <form method="POST" action="index.php?c=comment&a=denunciar">
+            <input type="hidden" name="comentario_id" id="comentarioIdInput">
+            <input type="hidden" name="post_id" value="<?= $postId ?>">
+            <textarea name="motivo" placeholder="Motivo de la denuncia" required style="width:100%; height:80px;"></textarea>
+            <br><br>
+            <button type="submit">Enviar denuncia</button>
+            <button type="button" onclick="cerrarModal()">Cancelar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function abrirModal(commentId) {
+        document.getElementById('comentarioIdInput').value = commentId;
+        document.getElementById('modalDenuncia').style.display = 'block';
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalDenuncia').style.display = 'none';
+    }
+</script>
