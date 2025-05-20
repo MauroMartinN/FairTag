@@ -4,8 +4,8 @@ require_once '../model/entidades/Comment.php';
 require_once '../model/CommentDAO.php';
 require_once '../model/PostDAO.php';
 require_once '../model/notificacionDAO.php';
-require_once '../model/denunciaComentarioDAO.php';
-require_once '../model/entidades/denunciaComentario.php';
+require_once '../model/denunciaDAO.php';
+require_once '../model/entidades/denuncia.php';
 
 class CommentController {
 
@@ -48,30 +48,62 @@ class CommentController {
     }
 
     public function eliminar() {
-        if (isset($_GET['id'])) {
-            $this->model->eliminar($_GET['id']);
-            header("Location: index.php?c=Post&a=ver&id=" . $_GET['post_id']);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+            $commentId = intval($_POST['id']);
+            $postId = intval($_POST['post_id']);
+            $this->model->eliminar($commentId);
+            header("Location: index.php?c=Post&a=ver&id=$postId");
+            exit();
+        } else {
+            header("Location: index.php");
             exit();
         }
     }
 
     public function denunciar() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $comentarioId = $_POST['comentario_id'];
-            $usuarioId = $_SESSION['user_id'];
-            $motivo = $_POST['motivo'];
+        $usuarioId = $_SESSION['user_id'];
+        $comentarioId = $_POST['comentario_id'];
+        $motivo = $_POST['motivo'];
+        $postId = $_POST['post_id'];
 
-            $denuncia = new DenunciaComentario();
-            $denuncia->setComentarioId($comentarioId);
-            $denuncia->setUsuarioId($usuarioId);
-            $denuncia->setMotivo($motivo);
-            $denuncia->setFecha(date('Y-m-d H:i:s'));
+        $denuncia = new Denuncia();
+        $denuncia->setContenidoId($comentarioId);
+        $denuncia->setUsuarioId($usuarioId);
+        $denuncia->setTipo('comentario');
+        $denuncia->setMotivo($motivo);
+        $denuncia->setFecha(date('Y-m-d H:i:s'));
 
-            $dao = new DenunciaComentarioDAO();
-            $dao->guardar($denuncia);
+        $dao = new DenunciaDAO();
+        $dao->guardar($denuncia);
 
-            header("Location: index.php?c=Post&a=ver&id=" . $_POST['post_id']);
-            exit;
+        header("Location: index.php?c=post&a=ver&id=".$postId);
+        exit;
+    }
+
+    public function listarPorUserId() {
+        $userId = $_GET['id'];
+        $comments = $this->model->obtenerPorUserId($userId);
+        require_once '../view/header.php';
+        require_once '../view/dashboard/listaComments.php';
+        require_once '../view/footer.php';
+    }
+
+    public function ver() {
+        if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) {
+            if (isset($_GET['id'])) {
+                $comment = $this->model->obtenerPorId($_GET['id']);
+                require_once '../view/header.php';
+                require_once '../view/comment/ver.php';
+                require_once '../view/footer.php';
+            } else {
+                header("Location: index.php?c=Denuncia&a=listarDenuncias");
+                exit();
+            }
+        }
+        else {
+            header("Location: index.php");
+            exit();
         }
     }
+
 }

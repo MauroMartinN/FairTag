@@ -3,6 +3,17 @@
     <p>No tienes notificaciones nuevas.</p>
 <?php else: ?>
     <ul>
+        <li>
+            <a href="index.php?c=notificacion&a=marcarTodasComoLeidas">Marcar todas como leídas</a>
+        </li>
+        <li>
+            <a href="index.php?c=notificacion&a=eliminarTodas">Eliminar todas</a>
+        </li>
+        <li>
+            <a href="index.php?c=notificacion&a=eliminarLeidas">Eliminar leídas</a>
+        </li>
+
+        
         <?php foreach ($notificaciones as $notificacion): ?>
             <li style="margin-bottom: 10px; <?= $notificacion->getIsRead() ? 'color: gray;' : 'font-weight: bold;' ?>">
                 <?= htmlspecialchars($notificacion->getMessage()) ?>

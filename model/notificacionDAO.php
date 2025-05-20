@@ -82,8 +82,8 @@ class NotificacionDAO {
         ]);
     }
 
-    public function marcarComoLeida(int $id) {
-        $stmt = $this->pdo->prepare("UPDATE notification SET is_read = 1 WHERE id = ?");
+    public function eliminar(int $id) {
+        $stmt = $this->pdo->prepare("DELETE FROM notification WHERE id = ?");
         $stmt->execute([$id]);
     }
 
@@ -92,8 +92,13 @@ class NotificacionDAO {
         $stmt->execute([$userId]);
     }
 
-    public function eliminar(int $id) {
-        $stmt = $this->pdo->prepare("DELETE FROM notification WHERE id = ?");
-        $stmt->execute([$id]);
+    public function eliminarLeidas(int $userId) {
+        $stmt = $this->pdo->prepare("DELETE FROM notification WHERE is_read = 1 AND user_id = ?");
+        $stmt->execute([$userId]);
+    }
+
+    public function eliminarTodas(int $userId) {
+        $stmt = $this->pdo->prepare("DELETE FROM notification WHERE user_id = ?");
+        $stmt->execute([$userId]);
     }
 }

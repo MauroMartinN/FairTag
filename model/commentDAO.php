@@ -83,4 +83,23 @@ class CommentDAO {
         $stmt = $this->pdo->prepare("DELETE FROM comments WHERE id = ?");
         $stmt->execute([$id]);
     }
+    
+    public function obtenerPorUserId(int $user_id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM comments WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $comments = [];
+        foreach ($data as $row) {
+            $comment = new Comment();
+            $comment->setId($row['id']);
+            $comment->setContent($row['content']);
+            $comment->setCreatedAt($row['created_at']);
+            $comment->setUserId($row['user_id']);
+            $comment->setPostId($row['post_id']);
+            $comments[] = $comment;
+        }
+
+        return $comments;
+    }
 }

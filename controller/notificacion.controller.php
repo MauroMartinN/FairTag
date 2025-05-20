@@ -17,8 +17,6 @@ class NotificacionController {
         $userId = $_SESSION['user_id'];
         $notificaciones = $this->model->obtenerPorUsuario($userId);
 
-        $this->model->marcarTodasComoLeidas($userId);
-
         require_once '../view/header.php';
         require_once '../view/notificacion/index.php';
         require_once '../view/footer.php';
@@ -29,5 +27,27 @@ class NotificacionController {
             $this->model->eliminar($_GET['id']);
         }
         header("Location: index.php?c=Notificacion&a=index");
+        exit();
+    }
+
+    public function eliminarLeidas() {
+        $userId = $_SESSION['user_id'];
+        $this->model->eliminarLeidas($userId);
+        header("Location: index.php?c=Notificacion&a=index");
+        exit();
+    }
+
+    public function eliminarTodas() {
+        $userId = $_SESSION['user_id'];
+        $this->model->eliminarTodas($userId);
+        header("Location: index.php?c=Notificacion&a=index");
+        exit();
+    }
+
+    public function marcarTodasComoLeidas() {
+        $userId = $_SESSION['user_id'];
+        $this->model->marcarTodasComoLeidas($userId);
+        header("Location: index.php?c=Notificacion&a=index");
+        exit();
     }
 }

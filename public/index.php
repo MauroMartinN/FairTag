@@ -6,7 +6,7 @@ session_start();
 $controller = isset($_REQUEST['c']) ? strtolower($_REQUEST['c']) : 'pais';
 $accion = isset($_REQUEST['a']) ? $_REQUEST['a'] : 'Index';
 
-$validControllers = ['rol', 'user', 'map', 'post', 'comment', 'invitado', 'pais', 'notificacion'];
+$validControllers = ['rol', 'user', 'map', 'post', 'comment', 'invitado', 'pais', 'notificacion', 'dashboard', 'denuncia'];
 if (!in_array($controller, $validControllers)) {
     die("Acción no permitida");
 }

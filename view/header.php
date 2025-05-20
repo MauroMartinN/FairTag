@@ -37,16 +37,19 @@ if ($usuarioLogueado) {
             <ul>
                 <li><a href="index.php?c=Pais&a=index">Inicio</a></li>
                 <?php if ($usuarioLogueado): ?>
-                    <li>
-                        <a href="index.php?c=Notificacion&a=index">
-                            <?php if ($tieneNotificaciones): ?>
-                                <i class="fas fa-bell" style="color: red;"></i>
-                            <?php else: ?>
-                                 <i class="fas fa-bell-slash" style="color: gray;"></i>
-                            <?php endif; ?>
-                            Notificaciones
-                        </a>
-                    </li>
+                        <?php if ($_SESSION['rol_id'] == 1): ?>
+                            <li><a href="index.php?c=Dashboard&a=index">Dashboard Admin</a></li>
+                        <?php endif; ?>
+                        <li>
+                            <a href="index.php?c=Notificacion&a=index">
+                                <?php if ($tieneNotificaciones): ?>
+                                    <i class="fas fa-bell" style="color: red;"></i>
+                                <?php else: ?>
+                                    <i class="fas fa-bell-slash" style="color: gray;"></i>
+                                <?php endif; ?>
+                                Notificaciones
+                            </a>
+                        </li>
                     <li><a href="index.php?c=User&a=perfil">Perfil</a></li>
                     <li><a href="index.php?c=User&a=logout">Salir</a></li>
                 <?php else: ?>

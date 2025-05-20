@@ -4,6 +4,8 @@ require_once '../model/entidades/post.php';
 require_once '../model/postDAO.php';
 require_once '../model/commentDAO.php';
 require_once '../model/userDAO.php';
+require_once '../model/denunciaDAO.php';
+
 
 class PostController {
     private $model;
@@ -84,4 +86,32 @@ class PostController {
             header("Location: index.php?c=Post&a=index");
         }
     }
+
+    public function denunciar() {
+        $usuarioId = $_SESSION['user_id'];
+        $motivo = $_POST['motivo'];
+        $postId = $_POST['post_id'];
+
+        $denuncia = new Denuncia();
+        $denuncia->setContenidoId($postId);
+        $denuncia->setUsuarioId($usuarioId);
+        $denuncia->setTipo('post');
+        $denuncia->setMotivo($motivo);
+        $denuncia->setFecha(date('Y-m-d H:i:s'));
+
+        $dao = new DenunciaDAO();
+        $dao->guardar($denuncia);
+
+        header("Location: index.php?c=post&a=ver&id=".$postId);
+        exit;
+    }
+
+    public function listarPorUserId() {
+        $userId = $_GET['id'];
+        $posts = $this->model->obtenerPorUsuarioId($userId);
+        require_once '../view/header.php';
+        require_once '../view/dashboard/listaPosts.php';
+        require_once '../view/footer.php';
+    }
+
 }

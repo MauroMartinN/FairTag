@@ -81,6 +81,7 @@ class UserController {
     
             if ($user && password_verify($password, $user->getPassword())) {
                 $_SESSION['user_id'] = $user->getId();
+                $_SESSION['rol_id'] = $user->getRolId();
 
                 if (isset($_POST['remember'])) {
                     setcookie('remembered_email', $_POST['email'], time() + (30 * 24 * 60 * 60), "/");
@@ -140,6 +141,13 @@ class UserController {
             header("Location: index.php?c=User&a=perfil");
             exit;
         }
+    }
+
+    public function listar() {
+        $users = $this->model->getAll();
+        require_once '../view/header.php';
+        require_once '../view/dashboard/listarUsers.php';
+        require_once '../view/footer.php';
     }
     
 
