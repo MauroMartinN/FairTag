@@ -1,11 +1,11 @@
-<form id="registerF" action="?c=User&a=register" method="post" enctype="multipart/form-data">
+<form id="registerF" action="index.php?c=User&a=register" method="post" enctype="multipart/form-data">
     <div>
         <label>Usuario</label>
-        <input type="text" name="user" value=""/>
+        <input type="text" name="user" value="<?= isset($name) ? htmlspecialchars($name) : '' ?>"/>
     </div>
     <div>
         <label>Correo</label>
-        <input type="text" name="email" value=""/>
+        <input type="text" name="email" value="<?= isset($email) ? htmlspecialchars($email) : '' ?>"/>
     </div>
     <div>
         <label>Contraseña</label>

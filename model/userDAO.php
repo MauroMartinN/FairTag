@@ -31,12 +31,13 @@ class UserDAO {
     }
 
     public function registrar(User $user) {
-        $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password, rol_id) VALUES (:name, :email, :password, :rol_id)");
+        $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password, rol_id, image) VALUES (:name, :email, :password, :rol_id, :image)");
         $stmt->execute([
             'name' => $user->getName(),
             'email' => $user->getEmail(),
             'password' => password_hash($user->getPassword(), PASSWORD_DEFAULT),
-            'rol_id' => $user->getRolId()
+            'rol_id' => $user->getRolId(),
+            'image' => $user->getImage()
         ]);
     }
 
@@ -144,4 +145,29 @@ class UserDAO {
 
         return null;
     }
+
+    public function alternarFavorito($userId, $postId) {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM post_favoritos WHERE user_id = ? AND post_id = ?");
+        $stmt->execute([$userId, $postId]);
+        $existe = $stmt->fetchColumn() > 0;
+
+        if ($existe) {
+            $stmt = $this->pdo->prepare("DELETE FROM post_favoritos WHERE user_id = ? AND post_id = ?");
+            $stmt->execute([$userId, $postId]);
+            return 'eliminado';
+        } else {
+            $stmt = $this->pdo->prepare("INSERT INTO post_favoritos (user_id, post_id) VALUES (?, ?)");
+            $stmt->execute([$userId, $postId]);
+            return 'añadido';
+        }
+    }
+
+    public function yaEsFavorito($userId, $postId) {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM post_favoritos WHERE user_id = ? AND post_id = ?");
+        $stmt->execute([$userId, $postId]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+
+
 }

@@ -6,22 +6,29 @@
 
 <style>
     .leaflet-control-attribution {
-        font-size: 14px;       /* Aumenta el tamaño de letra */
-        padding: 8px 12px;      /* Más espacio alrededor */
-        background: rgba(255, 255, 255, 0.8); /* Fondo más visible */
-        color: #000;            /* Texto oscuro para más contraste */
+        font-size: 14px;
     }
 
     .popup {
-    min-width: 200px; /* Puedes ajustar esto */
-    font-size: 16px;
-}
+        min-width: 200px;
+        font-size: 16px;
+    }
+
+    #map {
+        width: 100%;
+        height: 80vh;
+        max-width: 90%;
+        overflow: hidden;
+        margin: 0 auto;
+        border-radius: 10px;
+    }
 </style>
 
 <h1><?= $paisNombre ?></h1>
 <a href="index.php?c=Post&a=crear">Crear nuevo post</a>
 
 <div id="map" style="height: 80vh;"></div>
+<br>
 
 <script>
 let lat = <?= $lat; ?>;

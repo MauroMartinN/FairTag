@@ -16,7 +16,11 @@
                 <?php endif; ?>
                 <p>
                     <a href="index.php?c=Post&a=ver&id=<?= $post->getId() ?>">Ver</a> |
-                    <a href="index.php?c=Post&a=eliminar&id=<?= $post->getId() ?>" onclick="return confirm('¿Seguro que quieres eliminar este post?')">Eliminar</a>
+                    <form action="index.php?c=Post&a=eliminar" method="post" onsubmit="return confirm('¿Seguro que quieres eliminar este post?');">
+                        <input type="hidden" name="id" value="<?= htmlspecialchars($post->getId()) ?>">
+                        <button type="submit">Eliminar</button>
+                    </form>
+
                 </p>
             </li>
         <?php endforeach; ?>

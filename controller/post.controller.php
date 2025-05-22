@@ -25,6 +25,9 @@ class PostController {
 
     public function ver() {
         if (isset($_GET['id'])) {
+            $userDAO = new UserDAO();
+            $yaEsFavorito = $userDAO->yaEsFavorito($_SESSION['user_id'], $_GET['id']);
+
             $post = $this->model->obtenerPorId($_GET['id']);
             $postId = $post->getId();
             $userId = $post->getUserId();
@@ -81,9 +84,15 @@ class PostController {
     }
 
     public function eliminar() {
-        if (isset($_GET['id'])) {
-            $this->model->eliminar($_GET['id']);
+        if (isset($_POST['id'])) {
+            $postId = $_POST['id'];
+            $this->model->eliminar($postId);
             header("Location: index.php?c=Post&a=index");
+            exit();
+        }
+        else {
+            header("Location: index.php?c=Post&a=index");
+            exit();
         }
     }
 

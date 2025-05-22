@@ -1,6 +1,7 @@
 <?php
 require_once '../model/userDAO.php';
 require_once '../model/entidades/user.php';
+require_once '../model/postDAO.php';
 
 class UserController {
 
@@ -12,20 +13,20 @@ class UserController {
 
     public function register() {
         $errorMessage = null;
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isset($_POST['user'])) {
                 $name     = trim($_POST['user']);
                 $email    = trim($_POST['email']);
                 $password = trim($_POST['password']);
-                $rol_id   = 1;
+                $rol_id   = 2;
 
                 $existingE = $this->model->obtenerPorEmail($email);
                 $existingN = $this->model->obtenerPorNombre($name);
 
-                if ($existingE) {
-                    $errorMessage = "El correo ya está en uso.";
-                } else if  ($existingN) {
+                if ($existingN) {
                     $errorMessage = "El nombre de usuario ya está en uso.";
+                } else if  ($existingE) {
+                    $errorMessage = "El correo ya está en uso.";
                 
                 } else {
                     $user = new User();
@@ -40,6 +41,8 @@ class UserController {
                     header("Location: index.php?c=User&a=login");
                     exit;
                 }
+                // header("Location: index.php?c=User&a=register&name=$name&email=$email&errorMessage=$errorMessage");
+                // exit;
             }
         }
 
@@ -107,11 +110,16 @@ class UserController {
     }
 
     public function eliminar() {
-        if (isset($_GET['id'])) {
-            $this->model->eliminar($_GET['id']);
-            header("Location: index.php?c=Pais&a=index");
-        }
+    if (isset($_POST['id'])) {
+        $this->model->eliminar($_POST['id']);
+        header("Location: index.php?c=Pais&a=index");
+        exit();
     }
+    else {
+        header("Location: index.php?c=Post&a=index");
+        exit();
+    }
+}
 
     public function actualizar() {
         if ($_POST) {
@@ -125,16 +133,16 @@ class UserController {
     
             $user = $this->model->obtenerPorId($_SESSION['user_id']);
             $user->setName($name);
-    
-            if (!empty($_POST['password'])) {
-                $user->setPassword($_POST['password']);
-            }
+
     
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $filename = basename($_FILES['image']['name']);
-                move_uploaded_file($_FILES['image']['tmp_name'], 'userImg/' . $filename);
-                $user->setImage($filename);
-            }
+            $originalName = basename($_FILES['image']['name']);
+            $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+            $uniqueName = uniqid('user_', true) . '.' . $extension;
+
+            move_uploaded_file($_FILES['image']['tmp_name'], 'userImg/' . $uniqueName);
+            $user->setImage($uniqueName);
+        }
     
             $this->model->actualizar($user);
     
@@ -149,7 +157,41 @@ class UserController {
         require_once '../view/dashboard/listarUsers.php';
         require_once '../view/footer.php';
     }
-    
+
+    public function perfilPosts() {
+        $postDAO = new PostDAO();
+
+        $userId = $_SESSION['user_id'];
+        $user = $this->model->obtenerPorId($userId);
+        $posts = $postDAO->obtenerPorUsuarioId($userId);
+        require_once '../view/header.php';
+        require_once '../view/user/listaPosts.php';
+        require_once '../view/footer.php';
+    }
+
+    public function favPosts() {
+        $postDAO = new PostDAO();
+
+        $userId = $_SESSION['user_id'];
+        $user = $this->model->obtenerPorId($userId);
+        $posts = $postDAO->obtenerFavoritosPorUsuarioId($userId);
+        require_once '../view/header.php';
+        require_once '../view/user/listaPosts.php';
+        require_once '../view/footer.php';
+    }
+
+    public function alternarPostFavorito() {
+    if (isset($_SESSION['user_id'], $_POST['post_id'])) {
+        $userId = $_SESSION['user_id'];
+        $postId = $_POST['post_id'];
+
+        $resultado = $this->model->alternarFavorito($userId, $postId);
+
+        header("Location: index.php?c=Post&a=ver&id=" . $postId);
+        exit();
+    }
+}
+
 
 
 }

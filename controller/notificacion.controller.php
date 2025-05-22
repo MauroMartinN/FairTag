@@ -23,9 +23,9 @@ class NotificacionController {
     }
 
     public function eliminar() {
-        if (isset($_GET['id'])) {
-            $this->model->eliminar($_GET['id']);
-        }
+        if (isset($_POST['id'])) {
+            $this->model->eliminar($_POST['id']);
+        } 
         header("Location: index.php?c=Notificacion&a=index");
         exit();
     }

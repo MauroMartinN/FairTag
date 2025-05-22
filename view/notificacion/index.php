@@ -22,7 +22,11 @@
                     <?= $notificacion->getIsRead() ? 'Leída' : 'No leída' ?>
                 </small>
                 <br>
-                <a href="index.php?c=notificacion&a=eliminar&id=<?= $notificacion->getId() ?>" onclick="return confirm('¿Seguro que quieres eliminar esta notificación?');">Eliminar</a> |
+                <form action="index.php?c=notificacion&a=eliminar" method="post" onsubmit="return confirm('¿Seguro que quieres eliminar esta notificación?');">
+                    <input type="hidden" name="id" value="<?= htmlspecialchars($notificacion->getId()) ?>">
+                    <button type="submit" class="btn-link">Eliminar</button>
+                </form>
+                |
                 <a href="index.php?c=Post&a=ver&id=<?= $notificacion->getPostId() ?>">Ver post</a>
             </li>
         <?php endforeach; ?>

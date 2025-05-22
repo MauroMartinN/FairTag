@@ -30,6 +30,12 @@ if ($usuarioLogueado) {
     <link rel="shortcut icon" href="/icon/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png" />
     <link rel="manifest" href="/icon/site.webmanifest" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <link rel="stylesheet" href="/assets/css/style.css" />
 </head>
 <body>
     <div>

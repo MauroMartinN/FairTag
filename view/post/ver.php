@@ -7,10 +7,27 @@
 <p><strong>Tipo:</strong> <?php echo $post->getType(); ?></p>
 <p><strong>Publicado:</strong> <?php echo $post->getCreatedAt(); ?></p>
 <p><strong>Ubicación:</strong> <a href="<?php echo htmlspecialchars($post->getGoogleLink()); ?>" target="_blank">Ver en Google Maps</a></p>
+<p><strong>Favoritos:</strong> <?= $this->model->obtenerNumeroFavoritosPorPostId($post->getId()) ?></p>
+
+<?php if (isset($_SESSION['user_id'])): ?>
+    <p>
+        <form action="index.php?c=User&a=alternarPostFavorito" method="post">
+            <input type="hidden" name="post_id" value="<?= htmlspecialchars($post->getId()) ?>">
+            <button type="submit">
+                <?= $yaEsFavorito ? 'Quitar de favoritos 💔' : 'Guardar como favorito ❤️' ?>
+            </button>
+        </form>
+    </p>
+<?php endif; ?>
+
 
 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $post->getUserId()): ?>
     <p>
-        <a href="index.php?c=Post&a=eliminar&id=<?php echo $post->getId(); ?>" onclick="return confirm('¿Seguro que quieres eliminar este post?')">Eliminar post</a>
+        <form action="index.php?c=Post&a=eliminar" method="post" onsubmit="return confirm('¿Seguro que quieres eliminar este post?');">
+            <input type="hidden" name="id" value="<?= htmlspecialchars($post->getId()) ?>">
+            <button type="submit">Eliminar post</button>
+        </form>
+
     </p>
 <?php endif; ?>
 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != $post->getUserId()): ?>

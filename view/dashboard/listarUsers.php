@@ -33,7 +33,11 @@
                 <td>
                     <a href="index.php?c=Post&a=listarPorUserId&id=<?= $user->getId() ?>">Ver Posts</a> |
                     <a href="index.php?c=Comment&a=listarPorUserId&id=<?= $user->getId() ?>">Ver Comentarios</a> |
-                    <a href="index.php?c=User&a=eliminar&id=<?= $user->getId() ?>" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar</a>
+                    <form action="index.php?c=User&a=eliminar" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
+                        <input type="hidden" name="id" value="<?= htmlspecialchars($user->getId()) ?>">
+                        <button type="submit">Eliminar</button>
+                    </form>
+
                 </td>
             </tr>
         <?php endforeach; ?>

@@ -103,4 +103,38 @@ class PostDAO {
         $stmt = $this->pdo->prepare("DELETE FROM posts WHERE id = ?");
         $stmt->execute([$id]);
     }
+
+    public function obtenerFavoritosPorUsuarioId(int $user_id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE id IN (SELECT post_id FROM post_favoritos WHERE user_id = ?)");
+        $stmt->execute([$user_id]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $posts = [];
+        foreach ($data as $row) {
+            $post = new Post();
+            $post->setId($row['id']);
+            $post->setTitle($row['title']);
+            $post->setContent($row['content']);
+            $post->setImage($row['image']);
+            $post->setCreatedAt($row['created_at']);
+            $post->setGoogleLink($row['google_link']);
+            $post->setUserId($row['user_id']);
+            $post->setCountry($row['country']);
+            $post->setType($row['type']);
+            $posts[] = $post;
+        }
+
+        return $posts;
+    }
+
+    public function guardarPostFavorito(int $user_id, int $post_id) {
+        $stmt = $this->pdo->prepare("INSERT INTO post_favoritos (user_id, post_id) VALUES (?, ?)");
+        $stmt->execute([$user_id, $post_id]);
+    }
+
+    public function obtenerNumeroFavoritosPorPostId(int $post_id) {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM post_favoritos WHERE post_id = ?");
+        $stmt->execute([$post_id]);
+        return $stmt->fetchColumn();
+    }
 }

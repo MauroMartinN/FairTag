@@ -24,8 +24,12 @@
                 <p>Ubicación: <?= htmlspecialchars($post->getCountry()) ?></p>
                 <p><a href="<?= htmlspecialchars($post->getGoogleLink()) ?>" target="_blank">Ver en Google Maps</a></p>
                 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $post->getUserId()): ?>
-                    <a href="index.php?c=Post&a=eliminar&id=<?= $post->getId() ?>" onclick="return confirm('¿Seguro que quieres eliminar este post?')">Eliminar</a>
+                    <form action="index.php?c=Post&a=eliminar" method="post" onsubmit="return confirm('¿Seguro que quieres eliminar este post?');" style="display:inline;">
+                        <input type="hidden" name="id" value="<?= htmlspecialchars($post->getId()) ?>">
+                        <button type="submit">Eliminar</button>
+                    </form>
                 <?php endif; ?>
+
             </li>
         <?php endforeach; ?>
     </ul>

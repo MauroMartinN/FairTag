@@ -29,9 +29,9 @@
                             <a href="index.php?c=Post&a=ver&id=<?= $denuncia->getContenidoId() ?>">Ver Post</a>
                         <?php endif; ?>
                         |
-                        <form method="POST" action="index.php?c=Denuncia&a=eliminarDenunciasConContenidoId" onsubmit="return confirm('¿Eliminar esta denuncia?')" style="display:inline;">
+                        <form method="POST" action="index.php?c=Denuncia&a=eliminarDenunciasConContenidoId" onsubmit="return confirm('¿Eliminar esta denuncia?')">
                             <input type="hidden" name="contenidoId" value="<?= $denuncia->getContenidoId() ?>">
-                            <button type="submit" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0;">
+                            <button type="submit">
                                 Eliminar
                             </button>
                         </form>
