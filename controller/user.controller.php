@@ -35,14 +35,13 @@ class UserController {
                     $user->setPassword($password);
                     $user->setRolId($rol_id);
                     $user->setImage("default.png");
+                    $user->setToken(null);
 
                     $this->model->registrar($user);
 
                     header("Location: index.php?c=User&a=login");
                     exit;
                 }
-                // header("Location: index.php?c=User&a=register&name=$name&email=$email&errorMessage=$errorMessage");
-                // exit;
             }
         }
 
@@ -181,17 +180,131 @@ class UserController {
     }
 
     public function alternarPostFavorito() {
-    if (isset($_SESSION['user_id'], $_POST['post_id'])) {
-        $userId = $_SESSION['user_id'];
-        $postId = $_POST['post_id'];
+        if (isset($_SESSION['user_id'], $_POST['post_id'])) {
+            $userId = $_SESSION['user_id'];
+            $postId = $_POST['post_id'];
 
-        $resultado = $this->model->alternarFavorito($userId, $postId);
+            $resultado = $this->model->alternarFavorito($userId, $postId);
 
-        header("Location: index.php?c=Post&a=ver&id=" . $postId);
-        exit();
+            header("Location: index.php?c=Post&a=ver&id=" . $postId);
+            exit();
+        }  
     }
+
+    public function enviarVerificacion() {
+    $userid = $_SESSION['user_id'];
+    $user = $this->model->obtenerPorId($userid);
+
+    if ($this->enviarCorreoVerificacion($user)) {
+        header("Location: index.php?c=user&a=perfil&correo=ok");
+    } else {
+        header("Location: index.php?c=user&a=perfil&correo=fail");
+    }
+    exit();
 }
 
+
+
+    public function enviarCorreoVerificacion($user) {
+        $token = bin2hex(random_bytes(16));
+        $user->setToken($token);
+        $this->model->actualizar($user);
+        $urlBase = "http://localhost/index.php?c=user&a=verificarCorreo&token=";
+        $link = $urlBase . urlencode($token);
+
+        $to = $user->getEmail();
+        $subject = "Verifica tu correo en FairTag";
+        $message = "Hola " . htmlspecialchars($user->getName()) . ",\n\n";
+        $message .= "Gracias por registrarte en FairTag.\n";
+        $message .= "Por favor, haz clic en el siguiente enlace para verificar tu correo electrónico:\n\n";
+        $message .= $link . "\n\n";
+        $message .= "Si no solicitaste esta verificación, puedes ignorar este correo.\n\n";
+        $message .= "Saludos,\nEl equipo de FairTag";
+
+        return mail($to, $subject, $message);
+    }
+
+    public function verificarCorreo() {
+        if (isset($_GET['token'])) {
+            $token = $_GET['token'];
+            $estadoVerificacion = $this->model->checkCorreoVerificacion($token);
+            require_once '../view/correos/estadoVerificacion.php';
+
+        }
+    }
+
+    public function olvidadoPassword() {
+        require_once '../view/header.php';
+        require_once '../view/correos/olvidadoPassword.php';
+        require_once '../view/footer.php';
+    }
+
+    public function enviarPassword() {
+        $user = $this->model->obtenerPorEmail($_POST['email']);
+        if (!$user) {
+            header("Location: index.php?c=user&a=olvidadoPassword&reset=fail");
+        } else {
+            $this->enviarCorreoPassword($user);
+            header("Location: index.php?c=user&a=olvidadoPassword&correo=ok");
+        }
+        exit();
+    }
+
+    public function enviarCorreoPassword($user) {
+        $token = bin2hex(random_bytes(16));
+        $user->setToken($token);
+        $this->model->actualizar($user);
+        $urlBase = "http://localhost/index.php?c=user&a=resetPassword&token=";
+        $link = $urlBase . urlencode($token);
+
+        $to = $user->getEmail();
+        $subject = "Restablecer contraseña en FairTag";
+        $message = "Hola " . htmlspecialchars($user->getName()) . ",\n\n";
+        $message .= "Recibimos una solicitud para restablecer tu contraseña.\n";
+        $message .= "Por favor, haz clic en el siguiente enlace para restablecer tu contraseña:\n\n";
+        $message .= $link . "\n\n";
+        $message .= "Si no solicitaste este cambio, puedes ignorar este correo.\n\n";
+        $message .= "Saludos,\nEl equipo de FairTag";
+
+        return mail($to, $subject, $message);
+    }
+
+
+    public function resetPassword() {
+        if (isset($_GET['token'])) {
+            $token = $_GET['token'];
+            $user = $this->model->obtenerPorToken($token);
+
+            if ($user) {
+                require_once '../view/header.php';
+                require_once '../view/correos/resetearPassword.php';
+                require_once '../view/footer.php';
+            } else {
+                echo "Token inválido o expirado.";
+            }
+        }
+    }
+
+    public function guardarNuevaPassword() {
+        if ($_POST && isset($_POST['token']) && isset($_POST['password'])) {
+            $token = $_POST['token'];
+            $nuevaPassword = $_POST['password'];
+            $user = $this->model->obtenerPorToken($token);
+
+            if ($user) {
+                $hashedPassword = password_hash($nuevaPassword, PASSWORD_DEFAULT);
+                $user->setPassword($hashedPassword);
+                $user->setToken(null);
+                $this->model->actualizarPasswordToken($user);
+
+                header("Location: index.php?c=user&a=login&restablecida=ok");
+            } else {
+                header("Location: index.php?c=user&a=login&restablecida=fail");
+            }
+            exit();
+        }
+    }
+    
 
 
 }

@@ -39,6 +39,20 @@
             userInput.after(error);
             hasError = true;
         }
+        if (user.length < 3) {
+            let error = document.createElement('div');
+            error.className = 'error-message';
+            error.textContent = 'El nombre de usuario debe tener al menos 3 caracteres.';
+            userInput.after(error);
+            hasError = true;
+        }
+        if (user.length > 20) {
+            let error = document.createElement('div');
+            error.className = 'error-message';
+            error.textContent = 'El nombre de usuario no puede tener más de 20 caracteres.';
+            userInput.after(error);
+            hasError = true;
+        }
 
         let emailInput = document.querySelector('input[name="email"]');
         let email = emailInput.value.trim();

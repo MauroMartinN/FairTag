@@ -12,3 +12,14 @@ if (isset($error)) echo "<div class='alert alert-danger'>$error</div>";
     <button type="submit">Iniciar Sesión</button>
 </form>
 <p><a href="index.php?c=User&a=register">Registrarse</a></p>
+<p><a href="index.php?c=User&a=olvidadoPassword">He olvidado mi contraseña</a></p>
+<?php	
+if (isset($_GET['restablecida'])) {
+    if ($_GET['restablecida'] == 'ok') {
+        echo "<div class='alert alert-success'>Contraseña restablecida correctamente.</div>";
+    } else if ($_GET['restablecida'] == 'fail') {
+        echo "<div class='alert alert-danger'>No se ha encontrado el correo.</div>";
+
+    }
+}
+?>

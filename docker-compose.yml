@@ -3,6 +3,7 @@ services:
   db: 
     image: mysql:latest
     environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
       - MYSQL_DATABASE=fairTag
       - MYSQL_USER=fairTag
       - MYSQL_PASSWORD=password

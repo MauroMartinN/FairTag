@@ -58,7 +58,11 @@ class PostController {
             header("Location: index.php?c=User&a=login");
             return;
         }
-
+        if (!isset($_SESSION['rol_id']) || $_SESSION['rol_id'] == 2) {
+            header("Location: index.php?c=User&a=perfil&v=ok");
+            return;
+        }
+        
 
         require_once '../view/header.php';
         require_once '../view/post/crear.php';

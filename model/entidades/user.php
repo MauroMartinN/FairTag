@@ -8,6 +8,7 @@ class User {
     private string $password;
     private int $rol_id;
     private string $image;
+    private ?string $token = null;
 
     public function getId() {
         return $this->id;
@@ -55,6 +56,14 @@ class User {
 
     public function setImage(string $image) {
         $this->image = $image;
+    }
+
+    public function getToken() {
+        return $this->token;
+    }
+
+    public function setToken(?string $token) {
+        $this->token = $token;
     }
     
 }

@@ -25,19 +25,21 @@ class UserDAO {
             $user->setPassword($data['password']);
             $user->setRolId($data['rol_id']);
             $user->setImage($data['image']);
+            $user->setToken($data['token']);
             return $user;
         }
         return null;
     }
 
     public function registrar(User $user) {
-        $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password, rol_id, image) VALUES (:name, :email, :password, :rol_id, :image)");
+        $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password, rol_id, image, token) VALUES (:name, :email, :password, :rol_id, :image, :token)");
         $stmt->execute([
             'name' => $user->getName(),
             'email' => $user->getEmail(),
             'password' => password_hash($user->getPassword(), PASSWORD_DEFAULT),
             'rol_id' => $user->getRolId(),
-            'image' => $user->getImage()
+            'image' => $user->getImage(),
+            'token' => $user->getToken()
         ]);
     }
 
@@ -54,6 +56,7 @@ class UserDAO {
             $user->setPassword($data['password']);
             $user->setRolId($data['rol_id']);
             $user->setImage($data['image']);
+            $user->setToken($data['token']);
             return $user;
         }
 
@@ -73,6 +76,7 @@ class UserDAO {
             $user->setPassword($data['password']);
             $user->setRolId($data['rol_id']);
             $user->setImage($data['image']);
+            $user->setToken($data['token']);
             return $user;
         }
 
@@ -93,6 +97,7 @@ class UserDAO {
             $user->setPassword($row['password']);
             $user->setRolId($row['rol_id']);
             $user->setImage($row['image']);
+            $user->setToken($row['token']);
             $users[] = $user;
         }
 
@@ -113,6 +118,7 @@ class UserDAO {
             $user->setPassword($row['password']);
             $user->setRolId($row['rol_id']);
             $user->setImage($row['image']);
+            $user->setToken($row['token']);
             $users[] = $user;
         }
 
@@ -120,12 +126,22 @@ class UserDAO {
     }
 
     public function actualizar(User $user) {
-        $stmt = $this->pdo->prepare("UPDATE users SET name = :name, rol_id = :rol_id, image = :image WHERE id = :id");
+        $stmt = $this->pdo->prepare("UPDATE users SET name = :name, rol_id = :rol_id, image = :image, token = :token WHERE id = :id");
         $stmt->execute([
             'name' => $user->getName(),
             'rol_id' => $user->getRolId(),
             'image' => $user->getImage(),
-            'id' => $user->getId()
+            'id' => $user->getId(),
+            'token' => $user->getToken()
+        ]);
+    }
+
+    public function actualizarPasswordToken(User $user) {
+        $stmt = $this->pdo->prepare("UPDATE users SET password = :password, token = :token WHERE id = :id");
+        $stmt->execute([
+            'password' => $user->getPassword(),
+            'id' => $user->getId(),
+            'token' => $user->getToken()
         ]);
     }
 
@@ -167,6 +183,40 @@ class UserDAO {
         $stmt->execute([$userId, $postId]);
         return $stmt->fetchColumn() > 0;
     }
+
+
+    public function checkCorreoVerificacion($token) {
+        $stmt = $this->pdo->prepare("SELECT id FROM users WHERE token = ?");
+        $stmt->execute([$token]);
+        $user = $stmt->fetch();
+        if ($user) {
+            $sql = "UPDATE users SET rol_id = 3, token = NULL WHERE id = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$user['id']]);
+            return true;
+        }
+        return false;
+    }
+
+    public function obtenerPorToken($token) {
+    $stmt = $this->pdo->prepare("SELECT * FROM users WHERE token = ?");
+    $stmt->execute([$token]);
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($data) {
+        $user = new User();
+        $user->setId($data['id']);
+        $user->setName($data['name']);
+        $user->setEmail($data['email']);
+        $user->setPassword($data['password']);
+        $user->setRolId($data['rol_id']);
+        $user->setImage($data['image']);
+        $user->setToken($data['token']);
+        return $user;
+    }
+
+    return null;
+}
 
 
 

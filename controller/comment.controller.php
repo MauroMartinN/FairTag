@@ -20,6 +20,10 @@ class CommentController {
     }
 
     public function guardar() {
+        if (!isset($_SESSION['rol_id']) || $_SESSION['rol_id'] == 2) {
+            header("Location: index.php?c=User&a=perfil&v=ok");
+            exit();
+        }
         if ($_POST) {
             $comment = new Comment();
             $comment->setContent($_POST['content']);
