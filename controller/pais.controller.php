@@ -1,6 +1,8 @@
 <?php
 require_once '../model/entidades/pais.php';
 require_once '../model/paisDAO.php';
+require_once '../model/costesDAO.php';
+require_once '../services/fetchCountry.php';
 
 class PaisController {
     private $model;
@@ -16,25 +18,42 @@ class PaisController {
     }
 
     public function ver() {
+        $paisNombre = $_GET['pais'] ?? null;
         $lat = $_GET['lat'] ?? null;
         $lon = $_GET['lon'] ?? null;
-        $paisNombre = $this->fetchCountryFromCoordinates($lat, $lon);
 
-        if (!$paisNombre) header('Location: index.php?controller=pais&action=index');
-            
+        if (!$paisNombre) {
+            header('Location: index.php?c=pais&a=index');
+            exit();
+        }
 
         $pais = $this->model->obtenerPorNombre($paisNombre);
+        $zoom = 6;
 
         if (!$pais) {
-            $pais = new Pais();
-            $pais->setName($paisNombre);
-            $this->model->añadir($pais);
-            $posts=[];
-            
+            header('Location: index.php?c=pais&a=index');
+            exit();
         } else {
-            $posts = $this->model->obtenerPosts($pais->getId());
-            foreach ($posts as $post) {
+
+            $costesDAO = new CostesDAO();
+
+            if (isset($_GET['city'])) {
+                $ciudad = $_GET['city'];
+                $costes = $costesDAO->obtenerPorCiudad($ciudad);
+                $coordenadas = fetchCoordinatesFromCity($ciudad);
+
+            if ($coordenadas) {
+                $lat = $coordenadas['lat'];
+                $lon = $coordenadas['lon'];
+                $zoom = 10;
             }
+            } else {
+                
+            $ciudades = $costesDAO->obtenerCiudadesPorCountryId($pais->getId());
+
+            }
+            $tipo = $_GET['type'] ?? null;
+            $posts = $this->model->obtenerPosts($pais->getId(), $tipo);
         }
 
         require_once '../view/header.php';
@@ -43,33 +62,6 @@ class PaisController {
     }
         
 
-    /**
-     * Obtiene el nombre del país a partir de coordenadas geográficas (latitud y longitud).
-     * 
-     * Esta función hace una petición HTTP a la API de Nominatim (OpenStreetMap) para
-     * obtener datos geográficos a partir de coordenadas.
-     */
-    private function fetchCountryFromCoordinates(String $lat, String $lon) {
-        $url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={$lat}&lon={$lon}&zoom=5&addressdetails=1";
     
-        $opts = [
-            "http" => [
-                "method" => "GET",
-                "header" => "User-Agent: MyApp/1.0\r\nAccept-Language: es"
-            ]
-        ];
-
-        $context = stream_context_create($opts);
-        $response = file_get_contents($url, false, $context);
-    
-        if ($response) {
-            $data = json_decode($response, true);
-            if (isset($data['address']['country'])) {
-                return $data['address']['country'];
-            }
-        }
-    
-        return false;
-    }
 }
     

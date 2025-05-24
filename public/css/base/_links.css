@@ -1,0 +1,9 @@
+a {
+  color: var(--verde-principal);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--verde-oscuro);
+  text-decoration: underline;
+}

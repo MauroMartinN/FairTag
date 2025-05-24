@@ -47,13 +47,13 @@ class Comment {
         $this->post_id = $post_id;
     }
 
-    public function getUserName() {
-        return $this->user_name;
-    }
+    // public function getUserName() {
+    //     return $this->user_name;
+    // }
 
-    public function setUserName($user_name) {
-        $this->user_name = $user_name;
-    }
+    // public function setUserName($user_name) {
+    //     $this->user_name = $user_name;
+    // }
 
     //public function getUserImage() {
     //    return $this->user_image;

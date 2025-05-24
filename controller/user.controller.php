@@ -65,6 +65,10 @@ class UserController {
     }
 
     public function editar() {
+        $errorMessage = null;
+        if (isset($_GET['error'])) {
+            $errorMessage = $_GET['error'];
+        }
         $user = new User();
         $userId = $_SESSION['user_id'];
         $user = $this->model->obtenerPorId($userId);
@@ -84,6 +88,7 @@ class UserController {
             if ($user && password_verify($password, $user->getPassword())) {
                 $_SESSION['user_id'] = $user->getId();
                 $_SESSION['rol_id'] = $user->getRolId();
+                $_SESSION['profile_image'] = "/userImg/".$user->getImage();
 
                 if (isset($_POST['remember'])) {
                     setcookie('remembered_email', $_POST['email'], time() + (30 * 24 * 60 * 60), "/");
@@ -121,34 +126,40 @@ class UserController {
 }
 
     public function actualizar() {
-        if ($_POST) {
-            $name = $_POST['name'];
-    
-            $existingN = $this->model->obtenerPorNombre($name);
-    
-            if ($existingN) {
-                $errorMessage = "El nombre de usuario ya está en uso.";
-            }
-    
-            $user = $this->model->obtenerPorId($_SESSION['user_id']);
-            $user->setName($name);
+    if ($_POST) {
+        $name = $_POST['name'];
 
-    
-            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $originalName = basename($_FILES['image']['name']);
-            $extension = pathinfo($originalName, PATHINFO_EXTENSION);
-            $uniqueName = uniqid('user_', true) . '.' . $extension;
+        $existingN = $this->model->obtenerPorNombre($name);
 
-            move_uploaded_file($_FILES['image']['tmp_name'], 'userImg/' . $uniqueName);
+        if ($existingN && $existingN->getId() !== $_SESSION['user_id']) {
+            $errorMessage = "El nombre de usuario ya está en uso.";
+            header("Location: index.php?c=User&a=editar&error=" . urlencode($errorMessage));
+            exit();
+        }
+
+        $user = $this->model->obtenerPorId($_SESSION['user_id']);
+        $user->setName($name);
+
+        $croppedImage = $_POST['cropped_image'] ?? null;
+
+        if ($croppedImage) {
+            $croppedImage = str_replace('data:image/png;base64,', '', $croppedImage);
+            $croppedImage = str_replace(' ', '+', $croppedImage);
+            $imageData = base64_decode($croppedImage);
+
+            $uniqueName = uniqid('user_', true) . '.png';
+            file_put_contents('userImg/' . $uniqueName, $imageData);
+
             $user->setImage($uniqueName);
         }
-    
-            $this->model->actualizar($user);
-    
-            header("Location: index.php?c=User&a=perfil");
-            exit;
-        }
+
+        $this->model->actualizar($user);
+
+        header("Location: index.php?c=User&a=perfil");
+        exit();
     }
+}
+
 
     public function listar() {
         $users = $this->model->getAll();

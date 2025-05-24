@@ -10,7 +10,7 @@ class Post {
     private string $latitude;
     private string $longitude;
     private int $user_id;
-    private string $country;
+    private int $country;
     private string $type;
 
     public function getId() {
@@ -59,7 +59,6 @@ class Post {
 
     public function setGoogleLink($google_link) {
         $this->google_link = $google_link;
-        $this->extractCoordinatesFromGoogleLink();
     }
 
     public function getLatitude() {
@@ -92,26 +91,6 @@ class Post {
 
     public function setType($type) {
         $this->type = $type;
-    }
-
-    private function extractCoordinatesFromGoogleLink() {
-        $partes = explode('!3d', $this->google_link);
-        if (isset($partes[1])) {
-            $coords1 = explode('!4d', $partes[1]);
-            $coords2 = explode('!', $coords1[1]);
-
-            $this->latitude = $coords1[0];
-            $this->longitude = $coords2[0];
-            return true;
-        }
-        return false;
-    }
-
-    public function getCoordinates() {
-        return [
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude
-        ];
     }
 
     public function setCountry($country) {

@@ -65,29 +65,36 @@ class PaisDAO {
         $stmt->execute([$pais->getName()]);
     }
 
-    public function obtenerPosts(int $id) {
+    public function obtenerPosts(int $id, string $type = null) {
+    if ($type) {
+        $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE country = ? AND type = ?");
+        $stmt->execute([$id, $type]);
+    } else {
         $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE country = ?");
         $stmt->execute([$id]);
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $posts = [];
-        foreach ($data as $row) {
-            $post = new Post();
-            $post->setId($row['id']);
-            $post->setTitle($row['title']);
-            $post->setContent($row['content']);
-            $post->setImage($row['image']);
-            $post->setCreatedAt($row['created_at']);
-            $post->setGoogleLink($row['google_link']);
-            $post->setLatitude($row['latitude']);
-            $post->setLongitude($row['longitude']);
-            $post->setCountry($row['country']);
-            $post->setUserId($row['user_id']);
-            $post->setType($row['type']);
-            $posts[] = $post;
-        }
-
-        return $posts;
     }
+
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $posts = [];
+    foreach ($data as $row) {
+        $post = new Post();
+        $post->setId($row['id']);
+        $post->setTitle($row['title']);
+        $post->setContent($row['content']);
+        $post->setImage($row['image']);
+        $post->setCreatedAt($row['created_at']);
+        $post->setGoogleLink($row['google_link']);
+        $post->setLatitude($row['latitude']);
+        $post->setLongitude($row['longitude']);
+        $post->setCountry($row['country']);
+        $post->setUserId($row['user_id']);
+        $post->setType($row['type']);
+        $posts[] = $post;
+    }
+
+    return $posts;
+}
+
 
 }

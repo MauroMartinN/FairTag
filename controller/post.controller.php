@@ -2,9 +2,11 @@
 
 require_once '../model/entidades/post.php';
 require_once '../model/postDAO.php';
+require_once '../model/paisDAO.php';
 require_once '../model/commentDAO.php';
 require_once '../model/userDAO.php';
 require_once '../model/denunciaDAO.php';
+require_once '../services/fetchCountry.php';
 
 
 class PostController {
@@ -32,7 +34,6 @@ class PostController {
             $postId = $post->getId();
             $userId = $post->getUserId();
 
-            $userDAO = new UserDAO();
             $user = $userDAO->obtenerPorId($userId);
             $autor = $user->getName();
 
@@ -62,8 +63,15 @@ class PostController {
             header("Location: index.php?c=User&a=perfil&v=ok");
             return;
         }
-        
+        if (isset($_GET['error'])) {
+            $error = $_GET['error'];
+            if ($error == 1)
+                $mensaje = "El enlace de Google Maps no es válido.";
+            else 
+                $mensaje = "El país seleccionado no coincide con las coordenadas del enlace de Google Maps.";
+        }
 
+        $pais = $_GET['pais'];
         require_once '../view/header.php';
         require_once '../view/post/crear.php';
         require_once '../view/footer.php';
@@ -71,19 +79,41 @@ class PostController {
 
     public function guardar() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            
+            $googleLink = $_POST['google_link'];
+            $coordenadas = $this->extraerCoordenadasDesdeLink($googleLink);
+            $latitude = $coordenadas['latitude'];
+            $longitude = $coordenadas['longitude'];
+            $pais = $_POST['pais'];
+
+            if (!$latitude || !$longitude) {
+                header("Location: index.php?c=Post&a=crear&error=1");
+                exit();
+            }
+            if ($pais != fetchCountryFromCoordinates($latitude, $longitude)) {
+                header("Location: index.php?c=Post&a=crear&error=2");
+                exit();
+            }
+            $paisDao = new PaisDAO();
+            $paisId = $paisDao->obtenerPorNombre($pais);
+            $paisId = $paisId->getId();
+
             $post = new Post();
             $post->setTitle($_POST['title']);
             $post->setContent($_POST['content']);
             $post->setImage($_FILES['image']['name']);
-            $post->setGoogleLink($_POST['google_link']);
+            $post->setGoogleLink($googleLink);
             $post->setUserId($_SESSION['user_id']); 
             $post->setCreatedAt(date('Y-m-d'));
+            $post->setLatitude($latitude);
+            $post->setLongitude($longitude);
+            $post->setCountry($paisId);
             $post->setType($_POST['type']);
 
             move_uploaded_file($_FILES['image']['tmp_name'], 'postsImg/' . $_FILES['image']['name']);
-
             $this->model->guardar($post);
-            header("Location: index.php?c=Post&a=index");
+            header("Location: index.php?c=Pais&a=ver&lat=".$latitude."&lon=".$longitude."&pais=".$pais);
+            exit();
         }
     }
 
@@ -127,4 +157,24 @@ class PostController {
         require_once '../view/footer.php';
     }
 
+    private function extraerCoordenadasDesdeLink($google_link) {
+        $partes = explode('!3d', $google_link);
+
+        if (isset($partes[1])) {
+            $coords1 = explode('!4d', $partes[1]);
+            $coords2 = explode('!', $coords1[1] ?? '');
+
+            if (isset($coords1[0], $coords2[0])) {
+                return [
+                    'latitude' => $coords1[0],
+                    'longitude' => $coords2[0]
+                ];
+            }
+        }
+
+        return [
+            'latitude' => null,
+            'longitude' => null
+        ];
+    }
 }

@@ -1,0 +1,31 @@
+
+.btn-principal {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.btn-principal:hover {
+    background-color: #19692c;
+}
+
+
+.form-filtro {
+    display: flex;
+    align-items: center;
+}
+
+.select-filtro {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
