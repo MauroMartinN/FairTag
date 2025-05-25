@@ -6,6 +6,7 @@ Para ejecutar el proyecto se necesita tener docker instalado.
 Para ejecutarlo situate en la carpeta en la que se encuentra el proyecto y usar docker compose up --build
 Desde Docker Desktop puedes ver 
 Enlace de github: https://github.com/MauroMartinN/FairTag
+En github falta la configuración de mandar correos por lo que no funcionará.
 
 ## Licencia
 
