@@ -2,14 +2,16 @@
 @import 'base/_reset.css';
 @import 'base/_typography.css';
 @import 'base/_links.css';
-@import 'base/_buttons.css';
 
 @import 'components/_form.css';
 @import 'components/_verPais.css';
 @import 'components/_perfil.css';
+@import 'components/_post.css';
+@import 'components/_comments.css';
 
 @import 'layout/_page-wrapper.css';
 @import 'layout/_footer.css';
 @import 'layout/_header.css';
 
 @import 'utilities/_images.css';
+@import 'utilities/_mapCosts.css';

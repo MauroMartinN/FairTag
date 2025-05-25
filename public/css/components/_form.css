@@ -1,4 +1,4 @@
-form {
+form.form-container {
   max-width: 420px;
   margin: 50px auto;
   padding: 35px 30px;
@@ -18,8 +18,8 @@ form {
   letter-spacing: 1px;
 }
 
-input[type="text"],
-input[type="password"] {
+form.form-container input[type="text"],
+form.form-container input[type="password"] {
   width: 100%;
   padding: 18px 20px;
   margin-bottom: 24px;
@@ -31,13 +31,13 @@ input[type="password"] {
   transition: border-color 0.3s ease;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus {
+form.form-container input[type="text"]:focus,
+form.form-container input[type="password"]:focus {
   border-color: var(--verde-principal);
   outline: none;
 }
 
-label {
+form.form-container label {
   display: flex;
   align-items: center;
   font-size: 1.1rem;
@@ -47,13 +47,13 @@ label {
   gap: 10px;
 }
 
-input[type="checkbox"] {
+form.form-container input[type="checkbox"] {
   width: 20px;
   height: 20px;
   cursor: pointer;
 }
 
-button[type="submit"] {
+form.form-container button[type="submit"] {
   width: 100%;
   padding: 16px 0;
   font-size: 1.25rem;
@@ -66,7 +66,7 @@ button[type="submit"] {
   transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover {
+form.form-container button[type="submit"]:hover {
   background-color: var(--verde-oscuro);
 }
 
@@ -91,26 +91,8 @@ button[type="submit"]:hover {
   border: 1px solid #badbcc;
 }
 
-p {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 1.1rem;
-}
-
-p a {
-  color: var(--verde-principal);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
-
-p a:hover {
-  color: var(--verde-oscuro);
-  text-decoration: underline;
-}
-
 @media (max-width: 460px) {
-  form {
+  form.form-container {
     margin: 30px 20px;
     padding: 30px 25px;
   }

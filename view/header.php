@@ -70,12 +70,10 @@ if ($usuarioLogueado) {
                 <nav class="main-nav" role="navigation" aria-label="Menú principal">
                     <ul>
                         <?php if ($usuarioLogueado): ?>
-                            <?php if ($_SESSION['rol_id'] == 1): ?>
-                                <li><a href="index.php?c=Dashboard&a=index">Dashboard Admin</a></li>
-                            <?php endif; ?>
                             <li class="perfil-dropdown">
                                 <a href="#" id="perfil-toggle" class="perfil-toggle">
-                                    <img src="<?= htmlspecialchars($_SESSION['profile_image']) ?>" alt="Perfil" class="perfil-img-small">
+                                    <img src="<?= htmlspecialchars($_SESSION['profile_image']) ?>" alt="Perfil"
+                                        class="perfil-img-small">
                                 </a>
                                 <ul id="perfil-menu" class="perfil-menu" style="display: none;">
                                     <li><a href="index.php?c=User&a=perfil"><i class="fas fa-user"></i> Perfil</a></li>
@@ -89,7 +87,11 @@ if ($usuarioLogueado) {
                                             Notificaciones
                                         </a>
                                     </li>
-                                    <li><a href="index.php?c=User&a=logout"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+                                    <?php if ($_SESSION['rol_id'] == 1): ?>
+                                        <li><a href="index.php?c=Dashboard&a=index"><i class="fas fa-tachometer-alt"></i> Dashboard Admin</a></li>
+                                    <?php endif; ?>
+                                    <li><a href="index.php?c=User&a=logout"><i class="fas fa-sign-out-alt"></i> Salir</a>
+                                    </li>
                                 </ul>
                             </li>
 

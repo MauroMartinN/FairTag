@@ -1,22 +1,8 @@
-<style>
-    .leaflet-control-attribution {
-        font-size: 14px;
-    }
-
-    #map {
-        width: 100%;
-        height: 80vh;
-        max-width: 90%;
-        overflow: hidden;
-        margin: 0 auto;
-        border-radius: 10px;
-    }
-</style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 
-<h1>Mapa de países</h1>
-<h2>Selecciona el país sobre el que quieres buscar información.</h2>
+<h1 class="base">Mapa de países</h1>
+<h2 class="base">Selecciona el país sobre el que quieres buscar información.</h2>
 
 <div id="map"></div>
 <br>

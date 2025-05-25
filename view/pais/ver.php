@@ -5,263 +5,252 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
 <style>
-    .leaflet-control-attribution {
-        font-size: 14px;
-    }
-
-    .popup {
-        min-width: 200px;
-        font-size: 16px;
-    }
-
-    .map-container {
-        position: relative;
-        height: 80vh;
-        max-width: 90%;
-        margin: 0 auto;
-        border-radius: 10px;
-    }
-
-    #map {
-        width: 100%;
-        height: 100%;
-        border-radius: 10px;
-    }
+    
 </style>
 
 
-<h1><?= $paisNombre ?></h1>
-
-<div class="container my-4">
-    <?php if (isset($costes)): ?>
-        <h2 class="mb-4"><?= htmlspecialchars($costes->city) ?>, <?= htmlspecialchars($paisNombre) ?></h2>
-        <div class="row">
-            <div class="col-md-6">
-                <ul class="list-group">
+<h1 class="base"><?= $paisNombre ?></h1>
 
 
-                    <li class="list-group-item active">Comida</li>
-                    <?php if ($costes->meal_inexpensive_restaurant !== null): ?>
-                        <li class="list-group-item"><strong>Comida económica:</strong>
-                            €<?= number_format($costes->meal_inexpensive_restaurant, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->meal_for_2_midrange !== null): ?>
-                        <li class="list-group-item"><strong>Comida para 2 (media):</strong>
-                            €<?= number_format($costes->meal_for_2_midrange, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->mcmeal_at_mcdonalds !== null): ?>
-                        <li class="list-group-item"><strong>Menú McDonald's:</strong>
-                            €<?= number_format($costes->mcmeal_at_mcdonalds, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->beer_domestic_restaurant !== null): ?>
-                        <li class="list-group-item"><strong>Cerveza nacional (restaurante):</strong>
-                            €<?= number_format($costes->beer_domestic_restaurant, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->beer_imported_restaurant !== null): ?>
-                        <li class="list-group-item"><strong>Cerveza importada (restaurante):</strong>
-                            €<?= number_format($costes->beer_imported_restaurant, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->cappuccino_restaurant !== null): ?>
-                        <li class="list-group-item"><strong>Cappuccino (restaurante):</strong>
-                            €<?= number_format($costes->cappuccino_restaurant, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->coke_pepsi !== null): ?>
-                        <li class="list-group-item"><strong>Coca-Cola / Pepsi (restaurante):</strong>
-                            €<?= number_format($costes->coke_pepsi, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->water_restaurant !== null): ?>
-                        <li class="list-group-item"><strong>Agua (restaurante):</strong>
-                            €<?= number_format($costes->water_restaurant, 2) ?></li>
-                    <?php endif; ?>
+<div class="container my-4" id="cost-container">
+    <h2 id="ciudad-pais" class="mb-4 text-success base"></h2>
+    <div class="row"></div>
+</div>
 
-                    <li class="list-group-item active">Supermercado</li>
-                    <?php if ($costes->milk_1l !== null): ?>
-                        <li class="list-group-item"><strong>Leche 1L:</strong> €<?= number_format($costes->milk_1l, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->bread_500g !== null): ?>
-                        <li class="list-group-item"><strong>Pan 500g:</strong> €<?= number_format($costes->bread_500g, 2) ?>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($costes->rice_1kg !== null): ?>
-                        <li class="list-group-item"><strong>Arroz 1kg:</strong> €<?= number_format($costes->rice_1kg, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->eggs_12 !== null): ?>
-                        <li class="list-group-item"><strong>Huevos (12 unidades):</strong>
-                            €<?= number_format($costes->eggs_12, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->cheese_1kg !== null): ?>
-                        <li class="list-group-item"><strong>Queso 1kg:</strong> €<?= number_format($costes->cheese_1kg, 2) ?>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($costes->chicken_1kg !== null): ?>
-                        <li class="list-group-item"><strong>Pollo 1kg:</strong> €<?= number_format($costes->chicken_1kg, 2) ?>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($costes->beef_1kg !== null): ?>
-                        <li class="list-group-item"><strong>Carne de vaca 1kg:</strong>
-                            €<?= number_format($costes->beef_1kg, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->apples_1kg !== null): ?>
-                        <li class="list-group-item"><strong>Manzanas 1kg:</strong> €<?= number_format($costes->apples_1kg, 2) ?>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($costes->bananas_1kg !== null): ?>
-                        <li class="list-group-item"><strong>Plátanos 1kg:</strong>
-                            €<?= number_format($costes->bananas_1kg, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->oranges_1kg !== null): ?>
-                        <li class="list-group-item"><strong>Naranjas 1kg:</strong>
-                            €<?= number_format($costes->oranges_1kg, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->tomato_1kg !== null): ?>
-                        <li class="list-group-item"><strong>Tomate 1kg:</strong> €<?= number_format($costes->tomato_1kg, 2) ?>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($costes->potato_1kg !== null): ?>
-                        <li class="list-group-item"><strong>Patata 1kg:</strong> €<?= number_format($costes->potato_1kg, 2) ?>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($costes->onion_1kg !== null): ?>
-                        <li class="list-group-item"><strong>Cebolla 1kg:</strong> €<?= number_format($costes->onion_1kg, 2) ?>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($costes->lettuce_head !== null): ?>
-                        <li class="list-group-item"><strong>Lechuga (unidad):</strong>
-                            €<?= number_format($costes->lettuce_head, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->water_1_5l_market !== null): ?>
-                        <li class="list-group-item"><strong>Agua 1.5L (supermercado):</strong>
-                            €<?= number_format($costes->water_1_5l_market, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->wine_midrange_market !== null): ?>
-                        <li class="list-group-item"><strong>Vino medio (supermercado):</strong>
-                            €<?= number_format($costes->wine_midrange_market, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->beer_domestic_market !== null): ?>
-                        <li class="list-group-item"><strong>Cerveza nacional (supermercado):</strong>
-                            €<?= number_format($costes->beer_domestic_market, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->beer_imported_market !== null): ?>
-                        <li class="list-group-item"><strong>Cerveza importada (supermercado):</strong>
-                            €<?= number_format($costes->beer_imported_market, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->cigarettes_20 !== null): ?>
-                        <li class="list-group-item"><strong>Cigarrillos (20 unidades):</strong>
-                            €<?= number_format($costes->cigarettes_20, 2) ?></li>
-                    <?php endif; ?>
 
-                    <li class="list-group-item active">Transporte</li>
-                    <?php if ($costes->transport_oneway !== null): ?>
-                        <li class="list-group-item"><strong>Billete transporte sencillo:</strong>
-                            €<?= number_format($costes->transport_oneway, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->transport_monthly !== null): ?>
-                        <li class="list-group-item"><strong>Abono transporte mensual:</strong>
-                            €<?= number_format($costes->transport_monthly, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->taxi_start !== null): ?>
-                        <li class="list-group-item"><strong>Precio inicio taxi:</strong>
-                            €<?= number_format($costes->taxi_start, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->taxi_1km !== null): ?>
-                        <li class="list-group-item"><strong>Taxi por km:</strong> €<?= number_format($costes->taxi_1km, 2) ?>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($costes->taxi_1h_wait !== null): ?>
-                        <li class="list-group-item"><strong>Taxi por 1h:</strong>
-                            €<?= number_format($costes->taxi_1h_wait, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->gasoline_1l !== null): ?>
-                        <li class="list-group-item"><strong>Gasolina 1L:</strong> €<?= number_format($costes->gasoline_1l, 2) ?>
-                        </li>
-                    <?php endif; ?>
-                    <?php if ($costes->car_vw_golf !== null): ?>
-                        <li class="list-group-item"><strong>Coche VW Golf:</strong>
-                            €<?= number_format($costes->car_vw_golf, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->car_toyota_corolla !== null): ?>
-                        <li class="list-group-item"><strong>Coche Toyota Corolla:</strong>
-                            €<?= number_format($costes->car_toyota_corolla, 2) ?></li>
-                    <?php endif; ?>
-
-                    <li class="list-group-item active">Utilidades</li>
-                    <?php if ($costes->utilities_85m2 !== null): ?>
-                        <li class="list-group-item"><strong>Electricidad 85kWh:</strong>
-                            €<?= number_format($costes->utilities_85m2, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->mobile_tariff_1min !== null): ?>
-                        <li class="list-group-item"><strong>Tarifa mobil por minuto:</strong>
-                            €<?= number_format($costes->mobile_tariff_1min, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->fitness_monthly !== null): ?>
-                        <li class="list-group-item"><strong>Gimnasio mensual:</strong>
-                            €<?= number_format($costes->fitness_monthly, 2) ?></li>
-                    <?php endif; ?>
-
-                    <li class="list-group-item active">Vivienda</li>
-                    <?php if ($costes->apartment_1br_center !== null): ?>
-                        <li class="list-group-item"><strong>Alquiler 1 hab. centro:</strong>
-                            €<?= number_format($costes->apartment_1br_center, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->apartment_1br_outside !== null): ?>
-                        <li class="list-group-item"><strong>Alquiler 1 hab. fuera centro:</strong>
-                            €<?= number_format($costes->apartment_1br_outside, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->apartment_3br_center !== null): ?>
-                        <li class="list-group-item"><strong>Alquiler 3 hab. centro:</strong>
-                            €<?= number_format($costes->apartment_3br_center, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->apartment_3br_outside !== null): ?>
-                        <li class="list-group-item"><strong>Alquiler 3 hab. fuera centro:</strong>
-                            €<?= number_format($costes->apartment_3br_outside, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->price_m2_center !== null): ?>
-                        <li class="list-group-item"><strong>Precio/m² centro ciudad:</strong>
-                            €<?= number_format($costes->price_m2_center, 2) ?></li>
-                    <?php endif; ?>
-                    <?php if ($costes->price_m2_outside !== null): ?>
-                        <li class="list-group-item"><strong>Precio/m² fuera centro:</strong>
-                            €<?= number_format($costes->price_m2_outside, 2) ?></li>
-                    <?php endif; ?>
-
-                    <li class="list-group-item active">Salarios</li>
-                    <?php if ($costes->avg_salary_monthly !== null): ?>
-                        <li class="list-group-item"><strong>Salario neto (soltero):</strong>
-                            €<?= number_format($costes->avg_salary_monthly, 2) ?></li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
-    <?php elseif (isset($ciudades)): ?>
-        <h2 class="mb-4">Ciudades en <?= htmlspecialchars($pais->getName()) ?></h2>
-        <div class="row">
-            <?php foreach ($ciudades as $ciudad): ?>
-                <div class="col-sm-6 col-md-4 mb-3">
-                    <a href="index.php?c=pais&a=ver&pais=<?= urlencode($pais->getName()) ?>&city=<?= urlencode($ciudad) ?>"
-                        class="text-decoration-none">
-                        <div class="panel panel-default">
-                            <div class="panel-body text-center">
-                                <h5 class="panel-title" style="margin:0;"><?= htmlspecialchars($ciudad) ?></h5>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            <?php endforeach; ?>
-        </div>
-
-    <?php endif; ?>
+<div class="container my-4" style="display: <?= isset($costes) ? 'none' : 'block' ?>;" id="city-container">
+    <h2 class="mb-4 base">Ciudades en <?= htmlspecialchars($pais->getName()) ?></h2>
+    <div class="row"></div>
 </div>
 
 
 
-<form action="index.php" method="get">
+<script>
+    let paisNombre = <?= json_encode($paisNombre) ?>;
+
+
+    if (<?= isset($costes) ? 'true' : 'false' ?>) {
+        let costes = <?= isset($costes) ? json_encode($costes->toArray()) : "null" ?>;
+
+
+        function crearSeccion(titulo, idUnico) {
+            const col = document.createElement('div');
+            col.className = 'col-md-4 mb-4';
+
+            const ul = document.createElement('ul');
+            ul.className = 'list-group';
+
+            const header = document.createElement('li');
+            header.className = 'list-group-item green-active clickable-header';
+            header.textContent = titulo;
+
+            const itemsContainer = document.createElement('div');
+            itemsContainer.className = 'toggle-content';
+            itemsContainer.id = `section-${idUnico}`;
+
+            header.addEventListener('click', () => {
+                itemsContainer.classList.toggle('show');
+            });
+
+            ul.appendChild(header);
+            ul.appendChild(itemsContainer);
+            col.appendChild(ul);
+
+            return { col, itemsContainer };
+        }
+
+        function agregarItem(etiqueta, valor) {
+            let li = document.createElement('li');
+            li.className = 'list-group-item';
+            li.innerHTML = `<strong>${etiqueta}:</strong> €${parseFloat(valor).toFixed(2)}`;
+            return li;
+        }
+        let etiquetas = {
+            meal_inexpensive_restaurant: "Comida económica (restaurante)",
+            meal_for_2_midrange: "Comida para 2 personas (restaurante de precio medio)",
+            mcmeal_at_mcdonalds: "Menú McDonald's",
+            beer_domestic_restaurant: "Cerveza nacional (restaurante)",
+            beer_imported_restaurant: "Cerveza importada (restaurante)",
+            cappuccino_restaurant: "Cappuccino (restaurante)",
+            coke_pepsi: "Coca-Cola / Pepsi (restaurante)",
+            water_restaurant: "Agua (restaurante)",
+            milk_1l: "Leche (1 litro)",
+            bread_500g: "Pan (500g)",
+            rice_1kg: "Arroz (1kg)",
+            eggs_12: "Huevos (12 unidades)",
+            cheese_1kg: "Queso local (1kg)",
+            chicken_1kg: "Pechuga de pollo (1kg)",
+            beef_1kg: "Carne de ternera (1kg)",
+            apples_1kg: "Manzanas (1kg)",
+            bananas_1kg: "Plátanos (1kg)",
+            oranges_1kg: "Naranjas (1kg)",
+            tomato_1kg: "Tomates (1kg)",
+            potato_1kg: "Patatas (1kg)",
+            onion_1kg: "Cebollas (1kg)",
+            lettuce_head: "Lechuga (una pieza)",
+            water_1_5l_market: "Agua (1.5L, supermercado)",
+            wine_midrange_market: "Vino (gama media, supermercado)",
+            beer_domestic_market: "Cerveza nacional (supermercado)",
+            beer_imported_market: "Cerveza importada (supermercado)",
+            cigarettes_20: "Cigarrillos (20 unidades)",
+
+            transport_oneway: "Billete de ida (transporte público)",
+            transport_monthly: "Abono mensual (transporte público)",
+            taxi_start: "Tarifa inicial taxi",
+            taxi_1km: "Tarifa taxi (1 km)",
+            taxi_1h_wait: "Espera taxi (1 hora)",
+            gasoline_1l: "Gasolina (1 litro)",
+            car_vw_golf: "Coche nuevo (Volkswagen Golf)",
+            car_toyota_corolla: "Coche nuevo (Toyota Corolla)",
+
+            utilities_85m2: "Servicios básicos (85m², electricidad, agua, etc.)",
+            mobile_tariff_1min: "Tarifa móvil (por minuto, prepago)",
+            internet_60mbps: "Internet (60 Mbps o más, ilimitado)",
+
+            fitness_monthly: "Gimnasio (mensual)",
+            tennis_hour_weekend: "Pista de tenis (1h en fin de semana)",
+            cinema_ticket: "Entrada de cine",
+
+            jeans_levis: "Vaqueros (Levis o similar)",
+            summer_dress_chain: "Vestido de verano (cadena tipo Zara)",
+            nike_shoes: "Zapatillas deportivas (Nike u otra marca)",
+            leather_shoes: "Zapatos de cuero (hombre)",
+
+            apartment_1br_center: "Piso 1 dormitorio (centro)",
+            apartment_1br_outside: "Piso 1 dormitorio (afueras)",
+            apartment_3br_center: "Piso 3 dormitorios (centro)",
+            apartment_3br_outside: "Piso 3 dormitorios (afueras)",
+            price_m2_center: "Precio por m² (centro)",
+            price_m2_outside: "Precio por m² (afueras)",
+
+            avg_salary_monthly: "Sueldo medio mensual neto"
+        };
+
+
+
+        let secciones = {
+            "Comida (restaurantes)": [
+                "meal_inexpensive_restaurant",
+                "meal_for_2_midrange",
+                "mcmeal_at_mcdonalds",
+                "beer_domestic_restaurant",
+                "beer_imported_restaurant",
+                "cappuccino_restaurant",
+                "coke_pepsi",
+                "water_restaurant"
+            ],
+            "Comida (supermercado)": [
+                "milk_1l",
+                "bread_500g",
+                "rice_1kg",
+                "eggs_12",
+                "cheese_1kg",
+                "chicken_1kg",
+                "beef_1kg",
+                "apples_1kg",
+                "bananas_1kg",
+                "oranges_1kg",
+                "tomato_1kg",
+                "potato_1kg",
+                "onion_1kg",
+                "lettuce_head",
+                "water_1_5l_market",
+                "wine_midrange_market",
+                "beer_domestic_market",
+                "beer_imported_market",
+                "cigarettes_20"
+            ],
+            "Transporte": [
+                "transport_oneway",
+                "transport_monthly",
+                "taxi_start",
+                "taxi_1km",
+                "taxi_1h_wait",
+                "gasoline_1l",
+                "car_vw_golf",
+                "car_toyota_corolla"
+            ],
+            "Servicios": [
+                "utilities_85m2",
+                "mobile_tariff_1min",
+                "internet_60mbps"
+            ],
+            "Ocio y deporte": [
+                "fitness_monthly",
+                "tennis_hour_weekend",
+                "cinema_ticket"
+            ],
+            "Ropa y calzado": [
+                "jeans_levis",
+                "summer_dress_chain",
+                "nike_shoes",
+                "leather_shoes"
+            ],
+            "Vivienda": [
+                "apartment_1br_center",
+                "apartment_1br_outside",
+                "apartment_3br_center",
+                "apartment_3br_outside",
+                "price_m2_center",
+                "price_m2_outside"
+            ],
+            "Otros": [
+                "avg_salary_monthly"
+            ]
+        };
+
+        document.getElementById("ciudad-pais").textContent = `${costes.city}, ${paisNombre}`;
+
+        const row = document.querySelector('#cost-container .row');
+
+        let seccionId = 0;
+
+        for (const [titulo, claves] of Object.entries(secciones)) {
+            const { col, itemsContainer } = crearSeccion(titulo, seccionId++);
+            claves.forEach(clave => {
+                if (costes[clave] != null) {
+                    itemsContainer.appendChild(agregarItem(etiquetas[clave], costes[clave]));
+                }
+            });
+            row.appendChild(col);
+        }
+
+    } else {
+        let cityContainer = document.getElementById('city-container');
+        cityContainer.display = 'block';
+        let cityContainerRow = document.querySelector('#city-container .row');
+        let ciudades = <?= isset($ciudades) ? json_encode($ciudades) : "null" ?>;
+        ciudades.forEach(ciudad => {
+            let cityDiv = document.createElement('div');
+            cityDiv.className = 'col-md-4 mb-3';
+            cityDiv.innerHTML = `
+               <a href="index.php?c=pais&a=ver&pais=<?= urlencode($paisNombre) ?>&city=${encodeURIComponent(ciudad)}" class="text-decoration-none">
+                    <div class="panel panel-default">
+                        <div class="panel-body text-center">
+                            <h5 class="panel-title" style="margin:0;">${ciudad}</h5>
+                        </div>
+                    </div>
+                </a>
+            `;
+            cityContainerRow.appendChild(cityDiv);
+        });
+
+    }
+</script>
+
+
+
+
+
+
+<form action="index.php" method="get" class="form-container">
     <div style="display: flex; justify-content: center;">
         <a href="index.php?c=Post&a=crear&pais=<?= urlencode($paisNombre) ?>" class="btn-principal">
             Crear nuevo post
         </a>
     </div>
     <br><br>
-    <h4>Filtrar por tipo de post</h4>
+    <h4 class="base">Filtrar por tipo de post</h4>
     <input type="hidden" name="c" value="pais">
     <input type="hidden" name="a" value="ver">
     <input type="hidden" name="pais" value="<?= htmlspecialchars($paisNombre) ?>">
@@ -269,7 +258,8 @@
     <input type="hidden" name="lon" value="<?= htmlspecialchars($lon) ?>">
 
     <div style="display: flex; justify-content: center;">
-        <select name="type" onchange="this.form.submit()" class="select-filtro" style="max-width: 350px; text-align: center;">
+        <select name="type" onchange="this.form.submit()" class="select-filtro"
+            style="max-width: 350px; text-align: center;">
             <option value="" disabled selected>Selecciona un tipo</option>
             <option value="">Todos los tipos</option>
             <option value="monumento">Monumento histórico</option>
@@ -389,10 +379,10 @@
         });
 
         setTimeout(() => {
-            const ulElement = document.querySelector('ul.leaflet-draw-actions.leaflet-draw-actions-top.leaflet-draw-actions-bottom');
-            const firstLi = ulElement ? ulElement.querySelector('li:first-child') : null;
+            let ulElement = document.querySelector('ul.leaflet-draw-actions.leaflet-draw-actions-top.leaflet-draw-actions-bottom');
+            let firstLi = ulElement ? ulElement.querySelector('li:first-child') : null;
             if (firstLi) {
-                const link = firstLi.querySelector('a');
+                let link = firstLi.querySelector('a');
                 if (link) {
                     link.click();
                     console.log('Modo borrar desactivado');

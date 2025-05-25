@@ -1,7 +1,7 @@
 <div class="container">
-    <h2>Crear nuevo post</h2>
+    <h2 class="base">Crear nuevo post</h2>
 
-    <form action="index.php?c=Post&a=guardar" method="post" enctype="multipart/form-data">
+    <form action="index.php?c=Post&a=guardar" method="post" enctype="multipart/form-data" class="form-post">
         <div>
             <label for="title">Título:</label>
             <input type="text" name="title" required>
@@ -17,13 +17,18 @@
             <input type="file" name="image" accept="image/*" required>
         </div>
 
+
+
         <div>
             <label for="google_link">Enlace de Google Maps:</label>
+            <?php
+            if (isset($_GET['error']) && $_GET['error'] == 1) {
+                echo '<p class="error">Error: El enlace de Google Maps no es válido.</p>';
+            }
+            ?>
             <input type="text" name="google_link" required>
         </div>
         <div>
-            <input type="hidden" name="pais" value="<?php echo htmlspecialchars($pais); ?>">
-
             <div>
                 <select name="type" required>
                     <option value="monumento">Monumento histórico</option>

@@ -1,11 +1,11 @@
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: var(--verde-claro);
+  background-color: var(--gris-claro);
   color: var(--negro);
   height: 100%;
 }
 
-h1, h2, h3, h4 {
+h1.base, h2.base, h3.base, h4.base {
   text-align: center;
   color: var(--verde-principal);
 }

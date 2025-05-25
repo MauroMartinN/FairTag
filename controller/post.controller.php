@@ -84,14 +84,10 @@ class PostController {
             $coordenadas = $this->extraerCoordenadasDesdeLink($googleLink);
             $latitude = $coordenadas['latitude'];
             $longitude = $coordenadas['longitude'];
-            $pais = $_POST['pais'];
-
+            $pais = fetchCountryFromCoordinates($latitude, $longitude);
+            
             if (!$latitude || !$longitude) {
                 header("Location: index.php?c=Post&a=crear&error=1");
-                exit();
-            }
-            if ($pais != fetchCountryFromCoordinates($latitude, $longitude)) {
-                header("Location: index.php?c=Post&a=crear&error=2");
                 exit();
             }
             $paisDao = new PaisDAO();

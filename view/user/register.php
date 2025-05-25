@@ -1,4 +1,4 @@
-<form id="registerF" action="index.php?c=User&a=register" method="post" enctype="multipart/form-data">
+<form id="registerF" action="index.php?c=User&a=register" method="post" enctype="multipart/form-data" class="form-container">
     <div>
         <input type="text" name="user" placeholder="Username"
             value="<?= isset($name) ? htmlspecialchars($name) : '' ?>" />
@@ -19,7 +19,8 @@
 
 
 
-    <button>Registrarse</button>
+    <button type="submit">Registrarse</button>
+    <p>¿Ya tienes cuenta? <a href="index.php?c=User&a=login">Inicia sesión</a></p>
 
 </form>
 

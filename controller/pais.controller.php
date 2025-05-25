@@ -4,20 +4,24 @@ require_once '../model/paisDAO.php';
 require_once '../model/costesDAO.php';
 require_once '../services/fetchCountry.php';
 
-class PaisController {
+class PaisController
+{
     private $model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->model = new PaisDAO();
     }
 
-    public function index() {
+    public function index()
+    {
         require_once '../view/header.php';
         require_once '../view/pais/index.php';
         require_once '../view/footer.php';
     }
 
-    public function ver() {
+    public function ver()
+    {
         $paisNombre = $_GET['pais'] ?? null;
         $lat = $_GET['lat'] ?? null;
         $lon = $_GET['lon'] ?? null;
@@ -42,14 +46,15 @@ class PaisController {
                 $costes = $costesDAO->obtenerPorCiudad($ciudad);
                 $coordenadas = fetchCoordinatesFromCity($ciudad);
 
-            if ($coordenadas) {
-                $lat = $coordenadas['lat'];
-                $lon = $coordenadas['lon'];
-                $zoom = 10;
-            }
+                if ($coordenadas) {
+                    $lat = $coordenadas['lat'];
+                    $lon = $coordenadas['lon'];
+                    $zoom = 10;
+                }
             } else {
-                
-            $ciudades = $costesDAO->obtenerCiudadesPorCountryId($pais->getId());
+
+                $costes = null;
+                $ciudades = $costesDAO->obtenerCiudadesPorCountryId($pais->getId());
 
             }
             $tipo = $_GET['type'] ?? null;
@@ -60,8 +65,7 @@ class PaisController {
         include_once '../view/pais/ver.php';
         require_once '../view/footer.php';
     }
-        
 
-    
+
+
 }
-    

@@ -1,0 +1,240 @@
+.post-container {
+    position: relative;
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: var(--gris-claro);
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--negro);
+}
+
+.post-container h2 {
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: var(--verde-oscuro);
+}
+
+.post-container p {
+  margin-bottom: 14px;
+  line-height: 1.5;
+  color: var(--gris-oscuro);
+}
+
+.post-container p strong {
+  color: var(--verde-principal);
+}
+
+.post-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 15px 0;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-container a {
+  color: var(--verde-principal);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.post-container a:hover {
+  color: var(--verde-oscuro);
+  text-decoration: underline;
+}
+
+.post-container form button {
+  background-color: var(--verde-principal);
+  color: var(--blanco);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.post-container form button:hover {
+  background-color: var(--verde-oscuro);
+}
+
+.boton1 {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.boton1 {
+    background-color: var(--verde-principal);
+    color: var(--blanco);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+#denunciaPost {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+#denunciaPost > div {
+  background: var(--blanco);
+  padding: 20px;
+  width: 320px;
+  margin: 100px auto;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 0 12px rgba(0,0,0,0.2);
+}
+
+#denunciaPost h4 {
+  margin-bottom: 15px;
+  color: var(--verde-oscuro);
+}
+
+#denunciaPost textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  border: 1.5px solid var(--gris-oscuro);
+  border-radius: 6px;
+  resize: none;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--negro);
+}
+
+#denunciaPost button {
+  margin-right: 10px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#denunciaPost button[type="submit"] {
+  background-color: var(--verde-principal);
+  color: var(--blanco);
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+#denunciaPost button[type="submit"]:hover {
+  background-color: var(--verde-oscuro);
+}
+
+#denunciaPost button[type="button"] {
+  background-color: #ccc;
+  border: none;
+  color: #333;
+}
+
+#denunciaPost button[type="button"]:hover {
+  background-color: #bbb;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+  color:  #e00;
+  transition: transform 0.2s ease;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.2);
+}
+
+
+form.form-post {
+  max-width: 520px;
+  margin: 50px auto;
+  padding: 35px 30px;
+  background-color: var(--blanco);
+  border-radius: 12px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+  color: var(--negro);
+}
+
+form.form-post h2 {
+  text-align: center;
+  color: var(--verde-principal);
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+form.form-post label {
+  display: block;
+  font-size: 16px;
+  color: var(--gris-oscuro);
+  margin-bottom: 10px;
+}
+
+form.form-post input[type="text"],
+form.form-post input[type="file"],
+form.form-post select,
+form.form-post textarea {
+  width: 100%;
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  border: 2px solid var(--gris-oscuro);
+  border-radius: 8px;
+  font-size: 16px;
+  color: var(--negro);
+  background-color: var(--gris-claro);
+  transition: border-color 0.3s ease;
+}
+
+form.form-post input[type="text"]:focus,
+form.form-post textarea:focus,
+form.form-post select:focus {
+  border-color: var(--verde-principal);
+  outline: none;
+}
+
+form.form-post textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+form.form-post button[type="submit"] {
+  width: 100%;
+  padding: 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--blanco);
+  background-color: var(--verde-principal);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form.form-post button[type="submit"]:hover {
+  background-color: var(--verde-oscuro);
+}
+
+@media (max-width: 480px) {
+  form.form-post {
+    margin: 30px 20px;
+    padding: 30px 25px;
+  }
+}

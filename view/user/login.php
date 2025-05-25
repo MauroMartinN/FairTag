@@ -1,9 +1,9 @@
-<h1>Login</h1>
+<h1 class="base">Login</h1>
 <?php
 if (isset($error))
     echo "<div class='alert alert-danger'>$error</div>";
 ?>
-<form method="POST" action="index.php?c=User&a=login">
+<form method="POST" action="index.php?c=User&a=login" class="form-container">
 
     <input type="text" name="email" placeholder="Email"
         value="<?php echo isset($_COOKIE['remembered_email']) ? $_COOKIE['remembered_email'] : ''; ?>">

@@ -15,26 +15,13 @@
             color: #333;
             line-height: 1.6;
         }
-        h1 {
-            color: var(--verde-principal);
-            margin-bottom: 20px;
-            font-weight: 700;
-            font-size: 2.2rem;
-        }
-        p {
-            margin-bottom: 15px;
-        }
-        ul {
-            margin-left: 20px;
-            list-style-type: disc;
-        }
     </style>
 </head>
 
 <body>
     <main>
         <section class="about-container">
-            <h1>Acerca de FairTag</h1>
+            <h1 class="base">Acerca de FairTag</h1>
 
             <p>
                 El objetivo principal de este proyecto es desarrollar una página web que permita a los usuarios
@@ -43,7 +30,7 @@
                 culturales, con el fin de evitar abusos de precios, desinformación o estafas.
             </p>
 
-            <h2>Descripción</h2>
+            <h2 class="base">Descripción</h2>
             <p>
                 Este proyecto nace de una necesidad real detectada durante la planificación de viajes al extranjero: muchas
                 veces es difícil saber si el precio de un producto típico es justo o si está inflado por tratarse de una zona
