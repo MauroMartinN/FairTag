@@ -1,8 +1,18 @@
+<?php if ($mensaje): ?>
+    <div id="popup-mensaje" class="popup-mensaje">
+        <?= htmlspecialchars($mensaje) ?>
+    </div>
+<?php endif; ?>
+
+
 <h1 class="base">Login</h1>
-<?php
-if (isset($error))
-    echo "<div class='alert alert-danger'>$error</div>";
-?>
+<?php if ($error): ?>
+    <div id="popup-mensaje" class="popup-mensaje-error">
+        <?= htmlspecialchars($error) ?>
+    </div>
+<?php endif; ?>
+
+
 <form method="POST" action="index.php?c=User&a=login" class="form-container">
 
     <input type="text" name="email" placeholder="Email"
@@ -26,3 +36,15 @@ if (isset($_GET['restablecida'])) {
     }
 }
 ?>
+
+<script>
+    setTimeout(function () {
+        var popup = document.getElementById('popup-mensaje');
+        if (popup) {
+            popup.style.opacity = '0';
+            setTimeout(function () {
+                popup.style.display = 'none';
+            }, 500);
+        }
+    }, 3000);
+</script>

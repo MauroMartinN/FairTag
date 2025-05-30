@@ -61,8 +61,8 @@ if ($usuarioLogueado) {
         });
     </script>
 
-    <div class="page-wrapper">
-        <header class="main-header" role="banner">
+    <div class="page-wrapper backdrop-blur">
+        <header class="main-header" role="banner" style="backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); background: rgba(255,255,255,0.7);">
             <div class="header-content">
                 <a href="index.php?c=Pais&a=index" class="logo">
                     <img src="/icon/web-app-manifest-512x512.png" alt="Logo FairTag" class="logo-img" />FairTag

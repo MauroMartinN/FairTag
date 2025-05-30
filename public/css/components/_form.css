@@ -97,3 +97,31 @@ form.form-container button[type="submit"]:hover {
     padding: 30px 25px;
   }
 }
+
+.popup-mensaje {
+  position: fixed;
+  top: 90px;
+  right: 20px;
+  background-color: var(--verde-principal);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  transition: opacity 0.5s ease-out;
+  opacity: 1;
+}
+
+.popup-mensaje-error {
+  position: fixed;
+  top: 90px;
+  right: 20px;
+  background-color: red;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  transition: opacity 0.5s ease-out;
+  opacity: 1;
+}

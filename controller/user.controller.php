@@ -39,7 +39,7 @@ class UserController {
 
                     $this->model->registrar($user);
 
-                    header("Location: index.php?c=User&a=login");
+                    header("Location: index.php?c=User&a=login&Registrado=ok");
                     exit;
                 }
             }
@@ -79,6 +79,15 @@ class UserController {
 
     public function login() {
         $error = null;
+        $mensaje = null;
+
+        if (isset($_GET['Registrado'])) {
+            if ($_GET['Registrado'] == 'ok') {
+                $mensaje = "Usuario registrado correctamente. Por favor, inicia sesión.";
+            }
+        }
+
+
     
         if ($_POST) {
             $email = trim($_POST['email']);
