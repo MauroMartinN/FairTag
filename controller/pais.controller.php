@@ -3,6 +3,7 @@ require_once '../model/entidades/pais.php';
 require_once '../model/paisDAO.php';
 require_once '../model/costesDAO.php';
 require_once '../services/fetchCountry.php';
+require_once '../services/convertRate.php';
 
 class PaisController
 {
@@ -59,6 +60,28 @@ class PaisController
             }
             $tipo = $_GET['type'] ?? null;
             $posts = $this->model->obtenerPosts($pais->getId(), $tipo);
+            $coin = $pais->getCoin();
+
+            $lastUpdate = new DateTime($pais->getLastUpdate());
+            $now = new DateTime();
+
+            $interval = $lastUpdate->diff($now);
+            if ($coin != 'EUR') {
+                if ($interval->m >= 1 || $interval->y >= 1) {
+                    $rate = getConvertRate($coin);
+
+                    $this->model->updateRate($pais->getId(), $rate);
+
+                    $pais->setConvertRate($rate);
+                    $pais->setLastUpdate($now->format('Y-m-d H:i:s'));
+
+                    $rate = number_format($rate, 2);
+                } else {
+                    $rate = number_format($pais->getConvertRate(), 2);
+                }
+
+            }
+
         }
 
         require_once '../view/header.php';

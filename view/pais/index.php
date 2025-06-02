@@ -23,25 +23,25 @@
         noWrap: true,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
-    
+
     map.on('click', function (e) {
-    let lat = e.latlng.lat;
-    let lon = e.latlng.lng;
+        let lat = e.latlng.lat;
+        let lon = e.latlng.lng;
 
-    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=en`)
-    .then(response => response.json())
-    .then(data => {
-        let country = data.address.country;
-        if(confirm("Has seleccionado " + country + "?")) {
-            location.href = `index.php?c=pais&a=ver&pais=${country}&lat=${lat}&lon=${lon}`;
-        } else {
-            return false;
-        }
-    })
-    .catch(err => {
-        alert("No se pudo obtener el país.");
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=en`)
+            .then(response => response.json())
+            .then(data => {
+                let country = data.address.country;
+                if (confirm("Has seleccionado " + country + "?")) {
+                    location.href = `index.php?c=pais&a=ver&pais=${country}&lat=${lat}&lon=${lon}`;
+                } else {
+                    return false;
+                }
+            })
+            .catch(err => {
+                alert("No se pudo obtener el país.");
+            });
     });
-});
 
-    
+
 </script>

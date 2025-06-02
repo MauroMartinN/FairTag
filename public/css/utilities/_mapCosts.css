@@ -26,10 +26,12 @@
 
 .toggle-content {
     display: none;
+    overflow: hidden;
 }
 
 .toggle-content.show {
     display: block;
+
 }
 
 .clickable-header {

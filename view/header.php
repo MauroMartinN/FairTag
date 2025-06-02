@@ -44,25 +44,29 @@ if ($usuarioLogueado) {
 
 <body>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const toggle = document.getElementById('perfil-toggle');
-            const menu = document.getElementById('perfil-menu');
+        if (<?= $usuarioLogueado ? 'true' : 'false' ?>) {
+            document.addEventListener('DOMContentLoaded', function () {
+                const toggle = document.getElementById('perfil-toggle');
+                const menu = document.getElementById('perfil-menu');
 
-            toggle.addEventListener('click', function (e) {
-                e.preventDefault();
-                menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-            });
+                toggle.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+                });
 
-            document.addEventListener('click', function (e) {
-                if (!toggle.contains(e.target) && !menu.contains(e.target)) {
-                    menu.style.display = 'none';
-                }
+                document.addEventListener('click', function (e) {
+                    if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+                        menu.style.display = 'none';
+                    }
+                });
             });
-        });
+        }
+
     </script>
 
     <div class="page-wrapper backdrop-blur">
-        <header class="main-header" role="banner" style="backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); background: rgba(255,255,255,0.7);">
+        <header class="main-header" role="banner"
+            style="backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); background: rgba(255,255,255,0.7);">
             <div class="header-content">
                 <a href="index.php?c=Pais&a=index" class="logo">
                     <img src="/icon/web-app-manifest-512x512.png" alt="Logo FairTag" class="logo-img" />FairTag
@@ -88,7 +92,8 @@ if ($usuarioLogueado) {
                                         </a>
                                     </li>
                                     <?php if ($_SESSION['rol_id'] == 1): ?>
-                                        <li><a href="index.php?c=Dashboard&a=index"><i class="fas fa-tachometer-alt"></i> Dashboard Admin</a></li>
+                                        <li><a href="index.php?c=Dashboard&a=index"><i class="fas fa-tachometer-alt"></i>
+                                                Dashboard Admin</a></li>
                                     <?php endif; ?>
                                     <li><a href="index.php?c=User&a=logout"><i class="fas fa-sign-out-alt"></i> Salir</a>
                                     </li>

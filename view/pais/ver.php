@@ -5,7 +5,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
 <style>
-    
+
 </style>
 
 
@@ -49,7 +49,23 @@
             itemsContainer.id = `section-${idUnico}`;
 
             header.addEventListener('click', () => {
+                let secciones = document.querySelectorAll('.toggle-content');
+                let parentsContainer = document.querySelectorAll('.list-group');
+
+                secciones.forEach(el => {
+                    el.classList.remove('show');
+                });
+                parentsContainer.forEach(parent => {
+                    parent.classList.remove('principal');
+                });
+
                 itemsContainer.classList.toggle('show');
+                parentsContainer = itemsContainer.parentElement;
+                parentsContainer.classList.toggle('principal');
+
+                let parentRow = col.parentElement;
+                parentRow.prepend(col);
+
             });
 
             ul.appendChild(header);
@@ -62,7 +78,11 @@
         function agregarItem(etiqueta, valor) {
             let li = document.createElement('li');
             li.className = 'list-group-item';
-            li.innerHTML = `<strong>${etiqueta}:</strong> €${parseFloat(valor).toFixed(2)}`;
+            <?php if (isset($rate)): ?>
+                li.innerHTML = `<strong>${etiqueta}:</strong> <br> - ${parseFloat(valor).toFixed(2)}€ <br> - Moneda local: ${(parseFloat(valor) * <?= $rate ?>).toFixed(2)} <?= $coin ?>`;
+            <?php else: ?>
+                li.innerHTML = `<strong>${etiqueta}:</strong> ${parseFloat(valor).toFixed(2)}€`;
+            <?php endif; ?>
             return li;
         }
         let etiquetas = {
@@ -103,7 +123,7 @@
             car_vw_golf: "Coche nuevo (Volkswagen Golf)",
             car_toyota_corolla: "Coche nuevo (Toyota Corolla)",
 
-            utilities_85m2: "Servicios básicos (85m², electricidad, agua, etc.)",
+            utilities_85m2: "Servicios básicos para un piso de 85m² (electricidad, agua, etc.)",
             mobile_tariff_1min: "Tarifa móvil (por minuto, prepago)",
             internet_60mbps: "Internet (60 Mbps o más, ilimitado)",
 
@@ -114,7 +134,7 @@
             jeans_levis: "Vaqueros (Levis o similar)",
             summer_dress_chain: "Vestido de verano (cadena tipo Zara)",
             nike_shoes: "Zapatillas deportivas (Nike u otra marca)",
-            leather_shoes: "Zapatos de cuero (hombre)",
+            leather_shoes: "Zapatos de cuero",
 
             apartment_1br_center: "Piso 1 dormitorio (centro)",
             apartment_1br_outside: "Piso 1 dormitorio (afueras)",
