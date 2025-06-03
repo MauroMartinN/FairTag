@@ -6,6 +6,7 @@ require_once '../model/paisDAO.php';
 require_once '../model/commentDAO.php';
 require_once '../model/userDAO.php';
 require_once '../model/denunciaDAO.php';
+require_once '../model/tipo_postDAO.php';
 require_once '../services/fetchCountry.php';
 
 
@@ -55,6 +56,10 @@ class PostController {
     }
 
     public function crear() {
+        $tiposDAO = new TipoPostDAO();
+
+        $tipos = $tiposDAO->getAll();
+
         if (!isset($_SESSION['user_id'])) {
             header("Location: index.php?c=User&a=login");
             return;

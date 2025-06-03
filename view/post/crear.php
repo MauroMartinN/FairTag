@@ -30,16 +30,7 @@
         </div>
         <div>
             <div>
-                <select name="type" required>
-                    <option value="monumento">Monumento histórico</option>
-                    <option value="museo">Museo</option>
-                    <option value="playa">Playa</option>
-                    <option value="montaña">Montaña / Sendero</option>
-                    <option value="parque">Parque o espacio natural</option>
-                    <option value="zona_comercial">Zona comercial / Mercado</option>
-                    <option value="mirador">Mirador</option>
-                    <option value="barrio_popular">Barrio pintoresco</option>
-                    <option value="otro">Otro</option>
+                <select name="type" required id="select">
                 </select>
             </div>
 
@@ -47,3 +38,19 @@
         </div>
     </form>
 </div>
+
+<script>
+
+    let select = document.getElementById('select');
+    let tipos = <?= json_encode(array_map(fn($tipo) => [
+        'id' => $tipo->getId(),
+        'name' => $tipo->getNombre()
+    ], $tipos)) ?>;
+
+    tipos.forEach(function(tipo) {
+        let option = document.createElement('option');
+        option.value = tipo.id;
+        option.textContent = tipo.name;
+        select.appendChild(option);
+    });
+</script>

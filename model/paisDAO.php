@@ -77,7 +77,7 @@ class PaisDAO
     public function obtenerPosts(int $id, string $type = null)
     {
         if ($type) {
-            $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE country = ? AND type = ?");
+            $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE country = ? AND tipo_post_id = ?");
             $stmt->execute([$id, $type]);
         } else {
             $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE country = ?");
@@ -99,7 +99,7 @@ class PaisDAO
             $post->setLongitude($row['longitude']);
             $post->setCountry($row['country']);
             $post->setUserId($row['user_id']);
-            $post->setType($row['type']);
+            $post->setType($row['tipo_post_id']);
             $posts[] = $post;
         }
 

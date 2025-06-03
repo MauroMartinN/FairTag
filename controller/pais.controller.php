@@ -2,6 +2,7 @@
 require_once '../model/entidades/pais.php';
 require_once '../model/paisDAO.php';
 require_once '../model/costesDAO.php';
+require_once '../model/tipo_postDAO.php';
 require_once '../services/fetchCountry.php';
 require_once '../services/convertRate.php';
 
@@ -41,6 +42,7 @@ class PaisController
         } else {
 
             $costesDAO = new CostesDAO();
+            $tiposDAO = new TipoPostDAO();
 
             if (isset($_GET['city'])) {
                 $ciudad = $_GET['city'];
@@ -61,6 +63,8 @@ class PaisController
             $tipo = $_GET['type'] ?? null;
             $posts = $this->model->obtenerPosts($pais->getId(), $tipo);
             $coin = $pais->getCoin();
+
+            $tipos = $tiposDAO->getAll();
 
             $lastUpdate = new DateTime($pais->getLastUpdate());
             $now = new DateTime();

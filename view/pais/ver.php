@@ -281,17 +281,6 @@
         <select name="type" onchange="this.form.submit()" class="select-filtro"
             style="max-width: 350px; text-align: center;">
             <option value="" disabled selected>Selecciona un tipo</option>
-            <option value="">Todos los tipos</option>
-            <option value="monumento">Monumento histórico</option>
-            <option value="museo">Museo</option>
-            <option value="playa">Playa</option>
-            <option value="montaña">Montaña / Sendero</option>
-            <option value="parque">Parque o espacio natural</option>
-            <option value="zona_comercial">Zona comercial / Mercado</option>
-            <option value="restaurante">Restaurante</option>
-            <option value="mirador">Mirador</option>
-            <option value="barrio_popular">Barrio pintoresco</option>
-            <option value="otro">Otro</option>
         </select>
     </div>
 </form>
@@ -409,5 +398,18 @@
                 }
             }
         }, 1);
+    });
+
+    let select = document.querySelector('.select-filtro');
+    let tipos = <?= json_encode(array_map(fn($tipo) => [
+        'id' => $tipo->getId(),
+        'name' => $tipo->getNombre()
+    ], $tipos)) ?>;
+
+    tipos.forEach(function(tipo) {
+        let option = document.createElement('option');
+        option.value = tipo.id;
+        option.textContent = tipo.name;
+        select.appendChild(option);
     });
 </script>

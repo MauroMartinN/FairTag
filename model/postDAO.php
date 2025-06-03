@@ -27,7 +27,7 @@ class PostDAO {
             $post->setGoogleLink($data['google_link']);
             $post->setUserId($data['user_id']);
             $post->setCountry($data['country']);
-            $post->setType($data['type']);
+            $post->setType($data['tipo_post_id']);
             return $post;
         }
 
@@ -49,7 +49,7 @@ class PostDAO {
             $post->setCreatedAt($row['created_at']);
             $post->setGoogleLink($row['google_link']);
             $post->setCountry($row['country']);
-            $post->setType($row['type']);
+            $post->setType($row['tipo_post_id']);
             $posts[] = $post;
         }
 
@@ -72,7 +72,7 @@ class PostDAO {
             $post->setGoogleLink($row['google_link']);
             $post->setUserId($row['user_id']);
             $post->setCountry($row['country']);
-            $post->setType($row['type']);
+            $post->setType($row['tipo_post_id']);
 
             $posts[] = $post;
         }
@@ -82,8 +82,8 @@ class PostDAO {
 
     public function guardar(Post $post) {
         $stmt = $this->pdo->prepare(
-            "INSERT INTO posts (title, content, image, created_at, google_link, user_id, country, latitude, longitude, type) 
-            VALUES (:title, :content, :image, :created_at, :google_link, :user_id, :country, :latitude, :longitude, :type)"
+            "INSERT INTO posts (title, content, image, created_at, google_link, user_id, country, latitude, longitude, tipo_post_id) 
+            VALUES (:title, :content, :image, :created_at, :google_link, :user_id, :country, :latitude, :longitude, :tipo_post_id)"
         );
         $stmt->execute([
             'title' => $post->getTitle(),
@@ -95,7 +95,7 @@ class PostDAO {
             'country' => $post->getCountry(),
             'latitude' => $post->getLatitude(),
             'longitude' => $post->getLongitude(),
-            'type' => $post->getType()
+            'tipo_post_id' => $post->getType()
         ]);
     }
 
@@ -120,7 +120,7 @@ class PostDAO {
             $post->setGoogleLink($row['google_link']);
             $post->setUserId($row['user_id']);
             $post->setCountry($row['country']);
-            $post->setType($row['type']);
+            $post->setType($row['tipo_post_id']);
             $posts[] = $post;
         }
 

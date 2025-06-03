@@ -11,7 +11,7 @@ class Post {
     private string $longitude;
     private int $user_id;
     private int $country;
-    private string $type;
+    private int $type;
 
     public function getId() {
         return $this->id;
