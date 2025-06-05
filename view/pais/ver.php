@@ -319,7 +319,10 @@
         $postLat = $post->getLatitude();
         $postLon = $post->getLongitude();
         $title = $post->getTitle();
-        $type = $post->getType();
+
+        $typeId = $post->getType();
+        $type = $tiposDAO->obtenerPorId($typeId)->getNombre();
+
         $id = $post->getId();
         $link = "index.php?c=Post&a=ver&id=$id";
         $popupContent = "

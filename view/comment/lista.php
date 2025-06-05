@@ -102,7 +102,6 @@
             let form = document.createElement('form');
             form.method = 'POST';
             form.action = 'index.php?c=Comment&a=eliminar';
-            form.style.display = 'inline';
             form.onsubmit = () => confirm('¿Seguro que quieres eliminar este comentario?');
 
             let inputId = document.createElement('input');
