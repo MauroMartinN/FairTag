@@ -1,11 +1,10 @@
-<!-- Cropper.js CSS y JS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
-<h2>Editar Perfil</h2>
 
-<form action="index.php?c=User&a=actualizar" method="POST" enctype="multipart/form-data">
-
+<form action="index.php?c=User&a=actualizar" method="POST" enctype="multipart/form-data" class="form-container">
+    <h2 class="base">Editar Perfil</h2>
+    <br>
     <?php if (isset($errorMessage)): ?>
         <p class="alert-danger"><?= htmlspecialchars($errorMessage) ?></p>
     <?php endif; ?>
@@ -15,7 +14,7 @@
     </div>
 
     <div>
-        <label for="image" class="seleccionar-imagen-label">Seleccionar imagen</label>
+        <label for="image" class="seleccionar-imagen-label">Cambiar imagen</label>
         <input type="file" id="image" name="image" accept="image/*" style="display:none;">
 
         <?php if ($user->getImage()): ?>

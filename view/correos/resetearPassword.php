@@ -1,4 +1,4 @@
-<form method="POST" action="index.php?c=user&a=guardarNuevaPassword">
+<form method="POST" action="index.php?c=user&a=guardarNuevaPassword" class="form-container">
     <input type="hidden" name="token" value="<?php echo htmlspecialchars($_GET['token']); ?>">
     <label for="password">Nueva Contraseña:</label>
     <input type="password" name="password" required>

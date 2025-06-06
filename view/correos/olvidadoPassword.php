@@ -1,12 +1,16 @@
-<h2>¿Olvidaste tu contraseña?</h2>
+<h2 class="base">¿Olvidaste tu contraseña?</h2>
 
-<p>Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.</p>
 
-<form action="index.php?c=user&a=enviarPassword" method="POST">
-    <label for="email">Correo electrónico:</label><br>
-    <input type="email" name="email" id="email" required><br><br>
-    
+<form action="index.php?c=user&a=enviarPassword" method="POST" class="form-container">
+    <p>Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.</p>
+    <br>
+    <label for="email">Correo electrónico:</label>
+    <input type="text" name="email" id="email" required placeholder="Introduce tu correo electrónico">
+    <br><br>
     <button type="submit">Enviar enlace</button>
+    <br><br>
+    <p><a href="index.php?c=user&a=login">Volver al inicio de sesión</a></p>
+
 </form>
 <?php
 if (isset($_GET['correo'])) {
@@ -17,5 +21,3 @@ if (isset($_GET['reset'])) {
     echo "<p>No se ha encontrado el correo.</p>";
 }
 ?>
-
-<p><a href="index.php?c=user&a=login">Volver al inicio de sesión</a></p>

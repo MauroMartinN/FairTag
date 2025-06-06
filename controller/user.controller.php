@@ -150,8 +150,14 @@ class UserController {
         $user->setName($name);
 
         $croppedImage = $_POST['cropped_image'] ?? null;
+        
 
         if ($croppedImage) {
+            $oldImage = $user->getImage();
+            if ($oldImage && file_exists('userImg/' . $oldImage)) {
+                unlink('userImg/' . $oldImage);
+            }
+
             $croppedImage = str_replace('data:image/png;base64,', '', $croppedImage);
             $croppedImage = str_replace(' ', '+', $croppedImage);
             $imageData = base64_decode($croppedImage);
@@ -160,6 +166,8 @@ class UserController {
             file_put_contents('userImg/' . $uniqueName, $imageData);
 
             $user->setImage($uniqueName);
+            $_SESSION['profile_image'] = "/userImg/".$user->getImage();
+
         }
 
         $this->model->actualizar($user);
