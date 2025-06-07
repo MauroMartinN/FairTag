@@ -137,4 +137,16 @@ class PostDAO {
         $stmt->execute([$post_id]);
         return $stmt->fetchColumn();
     }
+
+    public function obtenerPostPorCoordinadas(float $latitude, float $longitude) {
+        $stmt = $this->pdo->prepare("SELECT * FROM posts WHERE latitude = ? AND longitude = ?");
+        $stmt->execute([$latitude, $longitude]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($data) {
+            return true;
+        }
+
+        return false;
+    }
 }

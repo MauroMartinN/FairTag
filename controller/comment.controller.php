@@ -85,6 +85,10 @@ class CommentController {
     }
 
     public function listarPorUserId() {
+        if (!isset($_SESSION['user_id']) || $_SESSION['rol_id'] != 1) {
+            header("Location: index.php?c=Home&a=index");
+            exit;
+        }
         $userId = $_GET['id'];
         $comments = $this->model->obtenerPorUserId($userId);
         require_once '../view/header.php';

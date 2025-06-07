@@ -14,6 +14,11 @@
 
         <div>
             <label for="image">Imagen:</label>
+            <?php
+            if (isset($_GET['error']) && $_GET['error'] == 3) {
+                echo '<p class="error">'.htmlspecialchars($mensaje).'</p>';
+            }
+            ?>
             <input type="file" name="image" accept="image/*" required>
         </div>
 
@@ -22,8 +27,8 @@
         <div>
             <label for="google_link">Enlace de Google Maps:</label>
             <?php
-            if (isset($_GET['error']) && $_GET['error'] == 1) {
-                echo '<p class="error">Error: El enlace de Google Maps no es válido.</p>';
+            if (isset($_GET['error']) && $_GET['error'] != 3) {
+                echo '<p class="error">'.htmlspecialchars($mensaje).'</p>';
             }
             ?>
             <input type="text" name="google_link" required>

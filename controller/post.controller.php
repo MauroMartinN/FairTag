@@ -10,23 +10,27 @@ require_once '../model/tipo_postDAO.php';
 require_once '../services/fetchCountry.php';
 
 
-class PostController {
+class PostController
+{
     private $model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->model = new PostDAO();
     }
 
-    public function index() {
+    public function index()
+    {
         $posts = $this->model->obtenerTodos();
         $userDAO = new UserDAO();
-        
+
         require_once '../view/header.php';
         require_once '../view/post/posts.php';
         require_once '../view/footer.php';
     }
 
-    public function ver() {
+    public function ver()
+    {
         if (isset($_GET['id'])) {
             $userDAO = new UserDAO();
             $yaEsFavorito = $userDAO->yaEsFavorito($_SESSION['user_id'], $_GET['id']);
@@ -51,11 +55,12 @@ class PostController {
 
             require_once '../view/footer.php';
         } else {
-            header("Location: index.php?c=Post&a=index");
+            header("Location: index.php?c=Pais&a=index");
         }
     }
 
-    public function crear() {
+    public function crear()
+    {
         $tiposDAO = new TipoPostDAO();
 
         $tipos = $tiposDAO->getAll();
@@ -72,8 +77,10 @@ class PostController {
             $error = $_GET['error'];
             if ($error == 1)
                 $mensaje = "El enlace de Google Maps no es válido.";
-            else 
-                $mensaje = "El país seleccionado no coincide con las coordenadas del enlace de Google Maps.";
+            else if ($error == 2)
+                $mensaje = "Ya hay un post en esas cordenadas.";
+            else if ($error == 3)  
+                $mensaje = "La imagen debe ser menor a 2MB.";
         }
 
         $pais = $_GET['pais'];
@@ -82,19 +89,31 @@ class PostController {
         require_once '../view/footer.php';
     }
 
-    public function guardar() {
+    public function guardar()
+    {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            
+
             $googleLink = $_POST['google_link'];
             $coordenadas = $this->extraerCoordenadasDesdeLink($googleLink);
             $latitude = $coordenadas['latitude'];
             $longitude = $coordenadas['longitude'];
             $pais = fetchCountryFromCoordinates($latitude, $longitude);
-            
-            if (!$latitude || !$longitude) {
+
+            if (!$latitude || !$longitude || !$pais) {
                 header("Location: index.php?c=Post&a=crear&error=1");
                 exit();
             }
+
+            if ($this->model->obtenerPostPorCoordinadas($latitude, $longitude)) {
+                header("Location: index.php?c=Post&a=crear&error=2");
+                exit();
+            }
+
+            if ($_FILES['image']['error'] == 1) {
+                header("Location: index.php?c=Post&a=crear&error=3");
+                exit();
+            }
+
             $paisDao = new PaisDAO();
             $paisId = $paisDao->obtenerPorNombre($pais);
             $paisId = $paisId->getId();
@@ -104,34 +123,43 @@ class PostController {
             $post->setContent($_POST['content']);
             $post->setImage($_FILES['image']['name']);
             $post->setGoogleLink($googleLink);
-            $post->setUserId($_SESSION['user_id']); 
+            $post->setUserId($_SESSION['user_id']);
             $post->setCreatedAt(date('Y-m-d'));
             $post->setLatitude($latitude);
             $post->setLongitude($longitude);
             $post->setCountry($paisId);
             $post->setType($_POST['type']);
+            
+            $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $uniqueName = uniqid('img_', true) . '.' . $ext;
+            $uploadPath = 'postsImg/' . $uniqueName;
+            move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
 
-            move_uploaded_file($_FILES['image']['tmp_name'], 'postsImg/' . $_FILES['image']['name']);
+            $post->setImage($uniqueName);
             $this->model->guardar($post);
-            header("Location: index.php?c=Pais&a=ver&lat=".$latitude."&lon=".$longitude."&pais=".$pais);
+            header("Location: index.php?c=Pais&a=ver&lat=" . $latitude . "&lon=" . $longitude . "&pais=" . $pais);
             exit();
         }
     }
 
-    public function eliminar() {
+    public function eliminar()
+    {
         if (isset($_POST['id'])) {
             $postId = $_POST['id'];
+            $post = $this->model->obtenerPorId($postId);
+            $postImage = $post->getImage();
+            unlink('postsImg/' . $postImage);
             $this->model->eliminar($postId);
-            header("Location: index.php?c=Post&a=index");
+            header("Location: index.php?c=user&a=perfilPosts");
             exit();
-        }
-        else {
-            header("Location: index.php?c=Post&a=index");
+        } else {
+            header("Location: index.php?c=Pais&a=index");
             exit();
         }
     }
 
-    public function denunciar() {
+    public function denunciar()
+    {
         $usuarioId = $_SESSION['user_id'];
         $motivo = $_POST['motivo'];
         $postId = $_POST['post_id'];
@@ -146,11 +174,16 @@ class PostController {
         $dao = new DenunciaDAO();
         $dao->guardar($denuncia);
 
-        header("Location: index.php?c=post&a=ver&id=".$postId);
+        header("Location: index.php?c=post&a=ver&id=" . $postId);
         exit;
     }
 
-    public function listarPorUserId() {
+    public function listarPorUserId()
+    {
+        if (!isset($_SESSION['user_id']) || $_SESSION['rol_id'] != 1) {
+            header("Location: index.php?c=Home&a=index");
+            exit;
+        }
         $userId = $_GET['id'];
         $posts = $this->model->obtenerPorUsuarioId($userId);
         require_once '../view/header.php';
@@ -158,7 +191,8 @@ class PostController {
         require_once '../view/footer.php';
     }
 
-    private function extraerCoordenadasDesdeLink($google_link) {
+    private function extraerCoordenadasDesdeLink($google_link)
+    {
         $partes = explode('!3d', $google_link);
 
         if (isset($partes[1])) {
