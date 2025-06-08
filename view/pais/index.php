@@ -32,7 +32,7 @@
             .then(response => response.json())
             .then(data => {
                 let country = data.address.country;
-                if (confirm("Has seleccionado " + country + "?")) {
+                if (abrirModalComment(country)) {
                     location.href = `index.php?c=pais&a=ver&pais=${country}&lat=${lat}&lon=${lon}`;
                 } else {
                     return false;
@@ -43,5 +43,30 @@
             });
     });
 
+
+</script>
+
+<div id="countryModal" class="modal-denuncia" style="display:none;">
+    <div class="modal-content">
+        <h4 class="base">Confirmación</h4>
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <p id="countrySelectedText"></p>
+            <div>
+                <button type="button" id="confirmCountryBtn">Sí</button>
+                <button type="button" onclick="cerrarModalComment()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModalComment(country) {
+        document.getElementById('countrySelectedText').textContent = `Has seleccionado ${country}?`;
+        document.getElementById('countryModal').style.display = 'block';
+        return false;
+    }
+    function cerrarModalComment() {
+        document.getElementById('countryModal').style.display = 'none';
+    }
 
 </script>
