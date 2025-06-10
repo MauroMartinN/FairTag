@@ -25,6 +25,7 @@
         <br>
 
         <input type="hidden" name="cropped_image" id="cropped_image">
+        <input type="hidden" name="id" value="<?= $userId ?>">
     </div>
 
     <button type="submit">Guardar Cambios</button>

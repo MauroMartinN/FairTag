@@ -27,7 +27,6 @@ class PaisController
         $paisNombre = $_GET['pais'] ?? null;
         $lat = $_GET['lat'] ?? null;
         $lon = $_GET['lon'] ?? null;
-
         if (!$paisNombre) {
             header('Location: index.php?c=pais&a=index');
             exit();

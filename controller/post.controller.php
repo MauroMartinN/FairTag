@@ -79,7 +79,7 @@ class PostController
                 $mensaje = "El enlace de Google Maps no es válido.";
             else if ($error == 2)
                 $mensaje = "Ya hay un post en esas cordenadas.";
-            else if ($error == 3)  
+            else if ($error == 3)
                 $mensaje = "La imagen debe ser menor a 2MB.";
         }
 
@@ -91,6 +91,10 @@ class PostController
 
     public function guardar()
     {
+        if (!isset($_SESSION['user_id']) || $_SESSION['rol_id'] == 2) {
+            header("Location: index.php?c=User&a=login");
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $googleLink = $_POST['google_link'];
@@ -129,7 +133,7 @@ class PostController
             $post->setLongitude($longitude);
             $post->setCountry($paisId);
             $post->setType($_POST['type']);
-            
+
             $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
             $uniqueName = uniqid('img_', true) . '.' . $ext;
             $uploadPath = 'postsImg/' . $uniqueName;
@@ -144,9 +148,16 @@ class PostController
 
     public function eliminar()
     {
-        if (isset($_POST['id'])) {
-            $postId = $_POST['id'];
-            $post = $this->model->obtenerPorId($postId);
+        $postId = $_POST['id'];
+        $post = $this->model->obtenerPorId($postId);
+        if (!$post) {
+            header("Location: index.php?c=Pais&a=index");
+            exit();
+        }
+
+        $userId = $_SESSION['user_id'];
+        $rolId = $_SESSION['rol_id'];
+        if ($rolId == 1 || ($rolId == 3 && $post->getUserId() == $userId)) {
             $postImage = $post->getImage();
             unlink('postsImg/' . $postImage);
             $this->model->eliminar($postId);
@@ -164,6 +175,11 @@ class PostController
         $motivo = $_POST['motivo'];
         $postId = $_POST['post_id'];
 
+        if (!isset($usuarioId) || !isset($motivo) || !isset($postId)) {
+            header("Location: index.php?c=Post&a=ver&id=" . $postId);
+            exit();
+        }
+
         $denuncia = new Denuncia();
         $denuncia->setContenidoId($postId);
         $denuncia->setUsuarioId($usuarioId);
@@ -175,7 +191,7 @@ class PostController
         $dao->guardar($denuncia);
 
         header("Location: index.php?c=post&a=ver&id=" . $postId);
-        exit;
+        exit();
     }
 
     public function listarPorUserId()

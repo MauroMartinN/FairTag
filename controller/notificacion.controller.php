@@ -1,14 +1,17 @@
 <?php
 require_once '../model/notificacionDAO.php';
 
-class NotificacionController {
+class NotificacionController
+{
     private $model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->model = new NotificacionDAO();
     }
 
-    public function index() {
+    public function index()
+    {
         if (!isset($_SESSION['user_id'])) {
             header("Location: index.php?c=User&a=login");
             exit();
@@ -22,29 +25,39 @@ class NotificacionController {
         require_once '../view/footer.php';
     }
 
-    public function eliminar() {
+    public function eliminar()
+    {
         if (isset($_POST['id'])) {
+            $userId = $_SESSION['user_id'];
+            $notificacion = $this->model->obtenerPorId($_POST['id']);
+            if ($notificacion->getUserId() != $userId) {
+                header("Location: index.php?c=Notificacion&a=index");
+                exit();
+            }
             $this->model->eliminar($_POST['id']);
-        } 
+        }
         header("Location: index.php?c=Notificacion&a=index");
         exit();
     }
 
-    public function eliminarLeidas() {
+    public function eliminarLeidas()
+    {
         $userId = $_SESSION['user_id'];
         $this->model->eliminarLeidas($userId);
         header("Location: index.php?c=Notificacion&a=index");
         exit();
     }
 
-    public function eliminarTodas() {
+    public function eliminarTodas()
+    {
         $userId = $_SESSION['user_id'];
         $this->model->eliminarTodas($userId);
         header("Location: index.php?c=Notificacion&a=index");
         exit();
     }
 
-    public function marcarTodasComoLeidas() {
+    public function marcarTodasComoLeidas()
+    {
         $userId = $_SESSION['user_id'];
         $this->model->marcarTodasComoLeidas($userId);
         header("Location: index.php?c=Notificacion&a=index");

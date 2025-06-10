@@ -3,31 +3,34 @@ require_once '../model/userDAO.php';
 require_once '../model/entidades/user.php';
 require_once '../model/postDAO.php';
 
-class UserController {
+class UserController
+{
 
     private $model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->model = new UserDAO();
     }
 
-    public function register() {
+    public function register()
+    {
         $errorMessage = null;
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isset($_POST['user'])) {
-                $name     = trim($_POST['user']);
-                $email    = trim($_POST['email']);
+                $name = trim($_POST['user']);
+                $email = trim($_POST['email']);
                 $password = trim($_POST['password']);
-                $rol_id   = 2;
+                $rol_id = 2;
 
                 $existingE = $this->model->obtenerPorEmail($email);
                 $existingN = $this->model->obtenerPorNombre($name);
 
                 if ($existingN) {
                     $errorMessage = "El nombre de usuario ya está en uso.";
-                } else if  ($existingE) {
+                } else if ($existingE) {
                     $errorMessage = "El correo ya está en uso.";
-                
+
                 } else {
                     $user = new User();
                     $user->setName($name);
@@ -49,13 +52,19 @@ class UserController {
         require_once '../view/user/register.php';
         require_once '../view/footer.php';
     }
-    public function index() {
+    public function index()
+    {
         require_once '../view/header.php';
         require_once '../view/map/inicioMap.php';
         require_once '../view/footer.php';
     }
 
-    public function perfil() {
+    public function perfil()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: index.php?c=User&a=login");
+            exit();
+        }
         $user = new User();
         $userId = $_SESSION['user_id'];
         $user = $this->model->obtenerPorId($userId);
@@ -64,7 +73,12 @@ class UserController {
         require_once '../view/footer.php';
     }
 
-    public function editar() {
+    public function editar()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: index.php?c=User&a=login");
+            exit();
+        }
         $errorMessage = null;
         if (isset($_GET['error'])) {
             $errorMessage = $_GET['error'];
@@ -77,7 +91,12 @@ class UserController {
         require_once '../view/footer.php';
     }
 
-    public function login() {
+    public function login()
+    {
+        if (isset($_SESSION['user_id'])) {
+            header("Location: index.php?c=Pais&a=index");
+            exit();
+        }
         $error = null;
         $mensaje = null;
 
@@ -87,17 +106,15 @@ class UserController {
             }
         }
 
-
-    
         if ($_POST) {
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
             $user = $this->model->obtenerPorEmail($email);
-    
+
             if ($user && password_verify($password, $user->getPassword())) {
                 $_SESSION['user_id'] = $user->getId();
                 $_SESSION['rol_id'] = $user->getRolId();
-                $_SESSION['profile_image'] = "/userImg/".$user->getImage();
+                $_SESSION['profile_image'] = "/userImg/" . $user->getImage();
 
                 if (isset($_POST['remember'])) {
                     setcookie('remembered_email', $_POST['email'], time() + (30 * 24 * 60 * 60), "/");
@@ -110,75 +127,96 @@ class UserController {
                 $error = "Email o contraseña incorrectos";
             }
         }
-    
+
         require_once '../view/header.php';
         require_once '../view/user/login.php';
         require_once '../view/footer.php';
     }
 
-    public function logout() {
+    public function logout()
+    {
         session_destroy();
         header("Location: index.php?c=Pais&a=index");
         exit();
     }
 
-    public function eliminar() {
-    if (isset($_POST['id'])) {
-        $this->model->eliminar($_POST['id']);
-        header("Location: index.php?c=Pais&a=index");
-        exit();
-    }
-    else {
-        header("Location: index.php?c=Post&a=index");
-        exit();
-    }
-}
+     public function eliminar()
+    {
+        $postDAO = new PostDAO();
 
-    public function actualizar() {
-    if ($_POST) {
-        $name = $_POST['name'];
+        $rolId = $_SESSION['rol_id'] ?? null;
+        $userId = $_SESSION['user_id'] ?? null;
 
-        $existingN = $this->model->obtenerPorNombre($name);
+        $user = $this->model->obtenerPorId($userId);
+        $posts = $postDAO->obtenerPorUsuarioId($userId);
 
-        if ($existingN && $existingN->getId() !== $_SESSION['user_id']) {
-            $errorMessage = "El nombre de usuario ya está en uso.";
-            header("Location: index.php?c=User&a=editar&error=" . urlencode($errorMessage));
+        if (isset($_POST['id']) && $rolId == 1) {
+            if ($user) {
+                foreach ($posts as $post) {
+                    $postDAO->eliminar($post->getId());
+                }
+                $this->model->eliminar($_POST['id']);
+            }
+        } else {
+            header("Location: index.php?c=Post&a=index");
             exit();
         }
 
-        $user = $this->model->obtenerPorId($_SESSION['user_id']);
-        $user->setName($name);
+    }
+    
 
-        $croppedImage = $_POST['cropped_image'] ?? null;
-        
+    public function actualizar()
+    {
+        $userId = $_SESSION['user_id'] ?? null;
+        if ($_POST['id'] != $userId) {
+            header("Location: index.php?c=Pais&a=index");
+            exit();
+        }
+        if ($_POST) {
+            $name = $_POST['name'];
 
-        if ($croppedImage) {
-            $oldImage = $user->getImage();
-            if ($oldImage && file_exists('userImg/' . $oldImage)) {
-                unlink('userImg/' . $oldImage);
+            $existingN = $this->model->obtenerPorNombre($name);
+
+            if ($existingN && $existingN->getId() !== $_SESSION['user_id']) {
+                $errorMessage = "El nombre de usuario ya está en uso.";
+                header("Location: index.php?c=User&a=editar&error=" . urlencode($errorMessage));
+                exit();
             }
 
-            $croppedImage = str_replace('data:image/png;base64,', '', $croppedImage);
-            $croppedImage = str_replace(' ', '+', $croppedImage);
-            $imageData = base64_decode($croppedImage);
+            $user = $this->model->obtenerPorId($_SESSION['user_id']);
+            $user->setName($name);
 
-            $uniqueName = uniqid('user_', true) . '.png';
-            file_put_contents('userImg/' . $uniqueName, $imageData);
+            $croppedImage = $_POST['cropped_image'] ?? null;
 
-            $user->setImage($uniqueName);
-            $_SESSION['profile_image'] = "/userImg/".$user->getImage();
 
+            if ($croppedImage) {
+                $oldImage = $user->getImage();
+                if ($oldImage && file_exists('userImg/' . $oldImage)) {
+                    unlink('userImg/' . $oldImage);
+                }
+
+                $croppedImage = str_replace('data:image/png;base64,', '', $croppedImage);
+                $croppedImage = str_replace(' ', '+', $croppedImage);
+                $imageData = base64_decode($croppedImage);
+
+                $uniqueName = uniqid('user_', true) . '.png';
+                file_put_contents('userImg/' . $uniqueName, $imageData);
+
+                $user->setImage($uniqueName);
+                $_SESSION['profile_image'] = "/userImg/" . $user->getImage();
+
+            }
+
+            $this->model->actualizar($user);
+
+            header("Location: index.php?c=User&a=perfil");
+            exit();
         }
-
-        $this->model->actualizar($user);
-
-        header("Location: index.php?c=User&a=perfil");
-        exit();
     }
-}
 
 
-    public function listar() {
+    public function listar()
+    {
         if (!isset($_SESSION['user_id']) || $_SESSION['rol_id'] != 1) {
             header("Location: index.php?c=Home&a=index");
             exit;
@@ -189,7 +227,8 @@ class UserController {
         require_once '../view/footer.php';
     }
 
-    public function perfilPosts() {
+    public function perfilPosts()
+    {
         $postDAO = new PostDAO();
 
         $userId = $_SESSION['user_id'];
@@ -200,7 +239,8 @@ class UserController {
         require_once '../view/footer.php';
     }
 
-    public function favPosts() {
+    public function favPosts()
+    {
         $postDAO = new PostDAO();
 
         $userId = $_SESSION['user_id'];
@@ -211,33 +251,36 @@ class UserController {
         require_once '../view/footer.php';
     }
 
-    public function alternarPostFavorito() {
+    public function alternarPostFavorito()
+    {
         if (isset($_SESSION['user_id'], $_POST['post_id'])) {
             $userId = $_SESSION['user_id'];
             $postId = $_POST['post_id'];
 
-            $resultado = $this->model->alternarFavorito($userId, $postId);
+            $this->model->alternarFavorito($userId, $postId);
 
             header("Location: index.php?c=Post&a=ver&id=" . $postId);
             exit();
-        }  
+        }
     }
 
-    public function enviarVerificacion() {
-    $userid = $_SESSION['user_id'];
-    $user = $this->model->obtenerPorId($userid);
+    public function enviarVerificacion()
+    {
+        $userid = $_SESSION['user_id'];
+        $user = $this->model->obtenerPorId($userid);
 
-    if ($this->enviarCorreoVerificacion($user)) {
-        header("Location: index.php?c=user&a=perfil&correo=ok");
-    } else {
-        header("Location: index.php?c=user&a=perfil&correo=fail");
+        if ($this->enviarCorreoVerificacion($user)) {
+            header("Location: index.php?c=user&a=perfil&correo=ok");
+        } else {
+            header("Location: index.php?c=user&a=perfil&correo=fail");
+        }
+        exit();
     }
-    exit();
-}
 
 
 
-    public function enviarCorreoVerificacion($user) {
+    private function enviarCorreoVerificacion($user)
+    {
         $token = bin2hex(random_bytes(16));
         $user->setToken($token);
         $this->model->actualizar($user);
@@ -256,7 +299,8 @@ class UserController {
         return mail($to, $subject, $message);
     }
 
-    public function verificarCorreo() {
+    public function verificarCorreo()
+    {
         if (isset($_GET['token'])) {
             $token = $_GET['token'];
             $estadoVerificacion = $this->model->checkCorreoVerificacion($token);
@@ -265,13 +309,15 @@ class UserController {
         }
     }
 
-    public function olvidadoPassword() {
+    public function olvidadoPassword()
+    {
         require_once '../view/header.php';
         require_once '../view/correos/olvidadoPassword.php';
         require_once '../view/footer.php';
     }
 
-    public function enviarPassword() {
+    public function enviarPassword()
+    {
         $user = $this->model->obtenerPorEmail($_POST['email']);
         if (!$user) {
             header("Location: index.php?c=user&a=olvidadoPassword&reset=fail");
@@ -282,7 +328,8 @@ class UserController {
         exit();
     }
 
-    public function enviarCorreoPassword($user) {
+    private function enviarCorreoPassword($user)
+    {
         $token = bin2hex(random_bytes(16));
         $user->setToken($token);
         $this->model->actualizar($user);
@@ -302,7 +349,8 @@ class UserController {
     }
 
 
-    public function resetPassword() {
+    public function resetPassword()
+    {
         if (isset($_GET['token'])) {
             $token = $_GET['token'];
             $user = $this->model->obtenerPorToken($token);
@@ -317,7 +365,8 @@ class UserController {
         }
     }
 
-    public function guardarNuevaPassword() {
+    public function guardarNuevaPassword()
+    {
         if ($_POST && isset($_POST['token']) && isset($_POST['password'])) {
             $token = $_POST['token'];
             $nuevaPassword = $_POST['password'];
@@ -336,7 +385,7 @@ class UserController {
             exit();
         }
     }
-    
+
 
 
 }

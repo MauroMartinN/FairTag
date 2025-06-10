@@ -28,15 +28,15 @@
         let lat = e.latlng.lat;
         let lon = e.latlng.lng;
 
-        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=en`)
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=es`)
             .then(response => response.json())
             .then(data => {
                 let country = data.address.country;
-                if (abrirModalComment(country)) {
+                abrirModalComment(country);
+                document.getElementById('botonPais').onclick = () => {
+                    cerrarModalComment();
                     location.href = `index.php?c=pais&a=ver&pais=${country}&lat=${lat}&lon=${lon}`;
-                } else {
-                    return false;
-                }
+                };
             })
             .catch(err => {
                 alert("No se pudo obtener el país.");
@@ -52,7 +52,7 @@
         <div style="display: flex; flex-direction: column; align-items: center;">
             <p id="countrySelectedText"></p>
             <div>
-                <button type="button" id="confirmCountryBtn">Sí</button>
+                <button type="button" id="botonPais">Sí</button>
                 <button type="button" onclick="cerrarModalComment()">Cancelar</button>
             </div>
         </div>
@@ -68,5 +68,4 @@
     function cerrarModalComment() {
         document.getElementById('countryModal').style.display = 'none';
     }
-
 </script>

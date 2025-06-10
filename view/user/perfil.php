@@ -18,6 +18,8 @@
                     <p class="error">❌ No se pudo enviar el correo.</p>
                 <?php elseif ($user->getRolId() == 2): ?>
                     <p>Hola, haz click en el <a href="index.php?c=user&a=enviarVerificacion" class="link-verificar">enlace</a> para verificar correo.</p>
+                <?php elseif ($user->getRolId() == 3): ?>
+                    <p>Cuenta verificada ✅</p>
                 <?php endif; ?>
 
                 <div class="links-usuario">

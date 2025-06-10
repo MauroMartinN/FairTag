@@ -7,19 +7,23 @@ require_once '../model/notificacionDAO.php';
 require_once '../model/denunciaDAO.php';
 require_once '../model/entidades/denuncia.php';
 
-class CommentController {
+class CommentController
+{
 
     private $model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->model = new CommentDAO();
     }
 
-    public function crear($post_id) {
+    public function crear($post_id)
+    {
         require_once '../view/comment/create.php';
     }
 
-    public function guardar() {
+    public function guardar()
+    {
         if (!isset($_SESSION['rol_id']) || $_SESSION['rol_id'] == 2) {
             header("Location: index.php?c=User&a=perfil&v=ok");
             exit();
@@ -51,10 +55,23 @@ class CommentController {
         }
     }
 
-    public function eliminar() {
+    public function eliminar()
+    {
+        $userId = $_SESSION['user_id'] ?? null;
+        $commentId = $_POST['id'] ?? null;
+        $comment = $this->model->obtenerPorId($commentId);
+        if (!$userId || !$comment || $comment->getUserId() != $userId) {
+            header("Location: index.php?c=User&a=perfil&v=ok");
+            exit();
+        }
+
+        if ($_SESSION['rol_id'] != 1) {
+            header("Location: index.php?c=Pais&a=index");
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-            $commentId = intval($_POST['id']);
-            $postId = intval($_POST['post_id']);
+            $commentId = $_POST['id'];
+            $postId = $_POST['post_id'];
             $this->model->eliminar($commentId);
             header("Location: index.php?c=Post&a=ver&id=$postId");
             exit();
@@ -64,8 +81,13 @@ class CommentController {
         }
     }
 
-    public function denunciar() {
+    public function denunciar()
+    {
         $usuarioId = $_SESSION['user_id'];
+        if (!isset($usuarioId)) {
+            header("Location: index.php?c=User&a=perfil&v=ok");
+            exit();
+        }
         $comentarioId = $_POST['comentario_id'];
         $motivo = $_POST['motivo'];
         $postId = $_POST['post_id'];
@@ -80,11 +102,12 @@ class CommentController {
         $dao = new DenunciaDAO();
         $dao->guardar($denuncia);
 
-        header("Location: index.php?c=post&a=ver&id=".$postId);
+        header("Location: index.php?c=post&a=ver&id=" . $postId);
         exit;
     }
 
-    public function listarPorUserId() {
+    public function listarPorUserId()
+    {
         if (!isset($_SESSION['user_id']) || $_SESSION['rol_id'] != 1) {
             header("Location: index.php?c=Home&a=index");
             exit;
@@ -96,7 +119,8 @@ class CommentController {
         require_once '../view/footer.php';
     }
 
-    public function ver() {
+    public function ver()
+    {
         if (isset($_SESSION['rol_id']) && $_SESSION['rol_id'] == 1) {
             if (isset($_GET['id'])) {
                 $comment = $this->model->obtenerPorId($_GET['id']);
@@ -107,8 +131,7 @@ class CommentController {
                 header("Location: index.php?c=Denuncia&a=listarDenuncias");
                 exit();
             }
-        }
-        else {
+        } else {
             header("Location: index.php");
             exit();
         }
