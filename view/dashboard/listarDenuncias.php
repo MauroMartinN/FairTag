@@ -10,7 +10,7 @@ const denuncias = <?= json_encode(array_map(function($denuncia) {
 }, $denuncias)) ?>;
 </script>
 
-<h2>Listado de Denuncias</h2>
+<h2 class="base">Listado de Denuncias</h2>
 <ul id="lista-denuncias"></ul>
 <div id="paginacion-denuncias" style="text-align:center; margin-top: 15px;"></div>
 

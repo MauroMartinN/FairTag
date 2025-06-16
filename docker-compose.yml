@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   db: 
-    image: mysql:latest
+    image: mysql:9.3.0
     environment:
       - MYSQL_ROOT_PASSWORD=rootpassword
       - MYSQL_DATABASE=fairTag
@@ -13,13 +13,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: php:apache
+    image: php:8.2-apache
     volumes:
       - "./:/var/www/html"
     ports:
       - 80:80
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin/phpmyadmin:5.2.1
     ports:
       - 8001:80
     environment:

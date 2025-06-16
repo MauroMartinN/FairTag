@@ -140,7 +140,7 @@ class UserController
         exit();
     }
 
-     public function eliminar()
+    public function eliminar()
     {
         $postDAO = new PostDAO();
 
@@ -163,7 +163,7 @@ class UserController
         }
 
     }
-    
+
 
     public function actualizar()
     {
@@ -172,46 +172,44 @@ class UserController
             header("Location: index.php?c=Pais&a=index");
             exit();
         }
-        if ($_POST) {
-            $name = $_POST['name'];
+        $name = $_POST['name'];
 
-            $existingN = $this->model->obtenerPorNombre($name);
+        $existingN = $this->model->obtenerPorNombre($name);
 
-            if ($existingN && $existingN->getId() !== $_SESSION['user_id']) {
-                $errorMessage = "El nombre de usuario ya está en uso.";
-                header("Location: index.php?c=User&a=editar&error=" . urlencode($errorMessage));
-                exit();
-            }
-
-            $user = $this->model->obtenerPorId($_SESSION['user_id']);
-            $user->setName($name);
-
-            $croppedImage = $_POST['cropped_image'] ?? null;
-
-
-            if ($croppedImage) {
-                $oldImage = $user->getImage();
-                if ($oldImage && file_exists('userImg/' . $oldImage)) {
-                    unlink('userImg/' . $oldImage);
-                }
-
-                $croppedImage = str_replace('data:image/png;base64,', '', $croppedImage);
-                $croppedImage = str_replace(' ', '+', $croppedImage);
-                $imageData = base64_decode($croppedImage);
-
-                $uniqueName = uniqid('user_', true) . '.png';
-                file_put_contents('userImg/' . $uniqueName, $imageData);
-
-                $user->setImage($uniqueName);
-                $_SESSION['profile_image'] = "/userImg/" . $user->getImage();
-
-            }
-
-            $this->model->actualizar($user);
-
-            header("Location: index.php?c=User&a=perfil");
+        if ($existingN && $existingN->getId() !== $_SESSION['user_id']) {
+            $errorMessage = "El nombre de usuario ya está en uso.";
+            header("Location: index.php?c=User&a=editar&error=" . urlencode($errorMessage));
             exit();
         }
+
+        $user = $this->model->obtenerPorId($_SESSION['user_id']);
+        $user->setName($name);
+
+        $croppedImage = $_POST['cropped_image'] ?? null;
+
+
+        if ($croppedImage) {
+            $oldImage = $user->getImage();
+            if ($oldImage && file_exists('userImg/' . $oldImage) && $oldImage != "default.png") {
+                unlink('userImg/' . $oldImage);
+            }
+
+            $croppedImage = str_replace('data:image/png;base64,', '', $croppedImage);
+            $croppedImage = str_replace(' ', '+', $croppedImage);
+            $imageData = base64_decode($croppedImage);
+
+            $uniqueName = uniqid('user_', true) . '.png';
+            file_put_contents('userImg/' . $uniqueName, $imageData);
+
+            $user->setImage($uniqueName);
+            $_SESSION['profile_image'] = "/userImg/" . $user->getImage();
+
+        }
+
+        $this->model->actualizar($user);
+
+        header("Location: index.php?c=User&a=perfil");
+        exit();
     }
 
 
