@@ -180,3 +180,8 @@
 .comentarios-section form button:hover {
     background-color: var(--verde-oscuro);
 }
+
+.comentarios-section {
+    padding-left: 24px;
+    padding-right: 24px;
+}
