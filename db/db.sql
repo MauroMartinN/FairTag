@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db:3306
--- Tiempo de generación: 12-06-2025 a las 16:09:20
+-- Tiempo de generación: 17-06-2025 a las 19:30:10
 -- Versión del servidor: 9.3.0
 -- Versión de PHP: 8.2.27
 
@@ -40,13 +40,12 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`id`, `content`, `created_at`, `user_id`, `post_id`) VALUES
-(30, 'pepeapewa\r\n', '2025-05-20 21:24:16', 1, 11),
 (34, 'esto es una foto??', '2025-05-25 15:51:30', 26, 13),
 (35, 'test2', '2025-05-25 16:17:16', 26, 13),
-(37, 'test3', '2025-05-25 16:23:03', 26, 13),
 (38, '?? me encanta', '2025-05-25 17:00:36', 26, 16),
 (39, 'hola\r\n', '2025-05-25 18:04:19', 26, 16),
-(47, 'hola', '2025-06-12 09:38:35', 15, 13);
+(47, 'hola', '2025-06-12 09:38:35', 15, 13),
+(48, 'Bonito parque', '2025-06-17 19:24:55', 15, 33);
 
 -- --------------------------------------------------------
 
@@ -1136,7 +1135,7 @@ INSERT INTO `countries` (`id`, `name`, `coin`, `convertRate`, `lastUpdate`) VALU
 (77, 'Azerbaiyán', 'AZN', 0.00, '2025-04-02 10:53:14'),
 (78, 'Cuba', 'CUP', 0.00, '2025-04-02 10:53:14'),
 (79, 'Zimbabue', 'ZWL', 0.00, '2025-04-02 10:53:14'),
-(80, 'Camboya', 'KHR', 0.00, '2025-04-02 10:53:14'),
+(80, 'Camboya', 'KHR', 4629.17, '2025-06-16 11:04:54'),
 (81, 'Somalia', 'SOS', 0.00, '2025-04-02 10:53:14'),
 (82, 'Bielorrusia', 'BYN', 0.00, '2025-04-02 10:53:14'),
 (83, 'Venezuela', 'VES', 0.00, '2025-04-02 10:53:14'),
@@ -1166,7 +1165,7 @@ INSERT INTO `countries` (`id`, `name`, `coin`, `convertRate`, `lastUpdate`) VALU
 (107, 'Ruanda', 'RWF', 0.00, '2025-04-02 10:53:14'),
 (108, 'Libia', 'LYD', 0.00, '2025-04-02 10:53:14'),
 (109, 'Georgia', 'GEL', 0.00, '2025-04-02 10:53:14'),
-(110, 'Dinamarca', 'DKK', 0.00, '2025-04-02 10:53:14'),
+(110, 'Dinamarca', 'DKK', 7.46, '2025-06-16 11:05:15'),
 (111, 'Chad', 'XAF', 0.00, '2025-04-02 10:53:14'),
 (112, 'Armenia', 'AMD', 0.00, '2025-04-02 10:53:14'),
 (113, 'Kirguistán', 'KGS', 0.00, '2025-04-02 10:53:14'),
@@ -1191,9 +1190,9 @@ INSERT INTO `countries` (`id`, `name`, `coin`, `convertRate`, `lastUpdate`) VALU
 (132, 'Finlandia', 'EUR', 0.00, '2025-04-02 10:53:14'),
 (133, 'Panamá', 'PAB', 0.00, '2025-04-02 10:53:14'),
 (134, 'Grecia', 'EUR', 0.00, '2025-04-02 10:53:14'),
-(135, 'Noruega', 'NOK', 0.00, '2025-04-02 10:53:14'),
+(135, 'Noruega', 'NOK', 11.46, '2025-06-16 11:05:37'),
 (136, 'Benín', 'XOF', 0.00, '2025-04-02 10:53:14'),
-(137, 'Macedonia del Norte', 'MKD', 0.00, '2025-04-02 10:53:14'),
+(137, 'Macedonia del Norte', 'MKD', 61.51, '2025-06-16 11:05:01'),
 (138, 'Moldavia', 'MDL', 0.00, '2025-04-02 10:53:14'),
 (139, 'Burundi', 'BIF', 0.00, '2025-04-02 10:53:14'),
 (140, 'Letonia', 'EUR', 0.00, '2025-04-02 10:53:14'),
@@ -1307,10 +1306,7 @@ CREATE TABLE `denuncias` (
 --
 
 INSERT INTO `denuncias` (`id`, `contenido_id`, `usuario_id`, `tipo`, `motivo`, `fecha`) VALUES
-(7, 30, 26, 'comentario', 'Test', '2025-05-25 12:03:03'),
-(8, 30, 26, 'comentario', 'test', '2025-05-25 12:17:47'),
-(9, 13, 26, 'post', 'es una foto de un ordenador :/', '2025-05-25 15:51:20'),
-(10, 37, 15, 'comentario', 'testes', '2025-06-07 09:58:18');
+(9, 13, 26, 'post', 'es una foto de un ordenador :/', '2025-05-25 15:51:20');
 
 -- --------------------------------------------------------
 
@@ -1337,7 +1333,8 @@ INSERT INTO `notification` (`id`, `user_id`, `post_id`, `is_read`, `message`) VA
 (18, 26, 16, 0, 'Nuevo comentario en tu post: hola\r\n...'),
 (21, 15, 13, 1, 'Nuevo comentario en tu post: test...'),
 (22, 15, 13, 1, 'Nuevo comentario en tu post: aawdawd...'),
-(26, 15, 13, 0, 'Nuevo comentario en tu post: hola...');
+(26, 15, 13, 0, 'Nuevo comentario en tu post: hola...'),
+(27, 15, 33, 0, 'Nuevo comentario en tu post: Bonito parque...');
 
 -- --------------------------------------------------------
 
@@ -1369,7 +1366,12 @@ INSERT INTO `posts` (`id`, `title`, `content`, `image`, `created_at`, `google_li
 (13, 'Museo', 'Museo de Vigo', 'IMG_20250429_094015.jpg', '2025-05-24 00:00:00', 'https://www.google.es/maps/place/Museo+do+Mar+de+Galicia/@42.2257722,-8.7534661,13.61z/data=!4m15!1m8!3m7!1s0xd2f621461b2c193:0x7b441dad174bd49f!2sVigo,+Pontevedra!3b1!8m2!3d42.2405989!4d-8.7207268!16zL20vMDI2a3pz!3m5!1s0xd2f61dd61fb61ef:0xde9520ee4e90b7f9!8m2!3d42.2241134!4d-8.7701874!16s%2Fg%2F11fxqrt674?entry=ttu&g_ep=EgoyMDI1MDUyMS4wIKXMDSoASAFQAw%3D%3D', '42.2405989', '-8.7207268', 46, 15, 1),
 (14, 'Hotel', 'trivago', 'Oila.png', '2025-05-25 00:00:00', 'https://www.google.es/maps/place/Hotel+Metropol/@43.0123132,-7.5770996,14z/data=!4m12!1m2!2m1!1sHoteles!3m8!1s0xd31ce90e3532d41:0xd671b0ad0efa985!5m2!4m1!1i2!8m2!3d43.0148885!4d-7.553877!16s%2Fg%2F1tfp3rdt?entry=ttu&g_ep=EgoyMDI1MDUyMS4wIKXMDSoASAFQAw%3D%3D', '43.0148885', '-7.553877', 46, 26, 1),
 (15, 'Hotel', 'trivago', 'Oila.png', '2025-05-25 00:00:00', 'https://www.google.es/maps/place/Hotel+Metropol/@43.0123132,-7.5770996,14z/data=!4m12!1m2!2m1!1sHoteles!3m8!1s0xd31ce90e3532d41:0xd671b0ad0efa985!5m2!4m1!1i2!8m2!3d43.0148885!4d-7.553877!16s%2Fg%2F1tfp3rdt?entry=ttu&g_ep=EgoyMDI1MDUyMS4wIKXMDSoASAFQAw%3D%3D', '43.0148885', '-7.553877', 46, 26, 1),
-(16, 'test5', 'islandia', 'DiagramaGant.png', '2025-05-25 00:00:00', 'https://www.google.es/maps/place/Hotel+Kjarnalundur/@65.1500589,-21.777064,7.77z/data=!4m12!1m2!2m1!1sHoteles!3m8!1s0x48d28f2e97885b27:0x60ddf67ebe170efe!5m2!4m1!1i2!8m2!3d65.6478457!4d-18.0809197!16s%2Fg%2F11bwcf4m8s?entry=ttu&g_ep=EgoyMDI1MDUyMS4wIKXMDSoASAFQAw%3D%3D', '65.6478457', '-18.0809197', 176, 26, 1);
+(16, 'test5', 'islandia', 'DiagramaGant.png', '2025-05-25 00:00:00', 'https://www.google.es/maps/place/Hotel+Kjarnalundur/@65.1500589,-21.777064,7.77z/data=!4m12!1m2!2m1!1sHoteles!3m8!1s0x48d28f2e97885b27:0x60ddf67ebe170efe!5m2!4m1!1i2!8m2!3d65.6478457!4d-18.0809197!16s%2Fg%2F11bwcf4m8s?entry=ttu&g_ep=EgoyMDI1MDUyMS4wIKXMDSoASAFQAw%3D%3D', '65.6478457', '-18.0809197', 176, 26, 1),
+(33, 'Parque Marineros 2010', 'Parque muy bonito donde se permiten perro', 'img_6851c035bb8898.49039352.png', '2025-06-17 00:00:00', 'https://www.google.es/maps/place/Parque+Marineros+2010/@43.365153,-8.4438166,15z/data=!4m10!1m2!2m1!1sparque!3m6!1s0xd2e7cf61b761efd:0xd73879655e2276b7!8m2!3d43.3651528!4d-8.4247615!15sCgZwYXJxdWVaCCIGcGFycXVlkgEEcGFya5oBJENoZERTVWhOTUc5blMwVkpRMEZuU1VNMmNHTlRTamhuUlJBQqoBOhABKgoiBnBhcnF1ZSgOMh4QASIaCDWz-YGu2svDzPb3kYgWQarkn1_VA-VuROQyChACIgZwYXJxdWXgAQD6AQQIABA8!16s%2Fg%2F11c31yt1z9?entry=ttu&g_ep=EgoyMDI1MDYxMS4wIKXMDSoASAFQAw%3D%3D', '43.3651528', '-8.4247615', 46, 15, 5),
+(34, 'Playa A Rapadoira', 'Playa urbana de arena fina, bandera azul, ideal para familias y deportes náuticos.', 'img_6851c18a639192.58937402.png', '2025-06-17 00:00:00', 'https://www.google.es/maps/place/Playa+A+Rapadoira/@43.5733138,-7.2500686,17z/data=!4m14!1m7!3m6!1s0xd32290078c275e7:0x75a83d5490699400!2sPlaya+A+Rapadoira!8m2!3d43.5733099!4d-7.2474937!16s%2Fg%2F11ycsdb7cc!3m5!1s0xd32290078c275e7:0x75a83d5490699400!8m2!3d43.5733099!4d-7.2474937!16s%2Fg%2F11ycsdb7cc?entry=ttu&g_ep=EgoyMDI1MDYxMS4wIKXMDSoASAFQAw%3D%3D', '43.5733099', '-7.2474937', 46, 15, 8),
+(35, 'Praia dos Alemáns', 'Cala pequeña, tranquila, rodeada de vegetación.', 'img_6851c1c83fca03.28895525.png', '2025-06-17 00:00:00', 'https://www.google.es/maps/place/Praia+dos+Alem%C3%A1ns/@42.2827975,-8.8384367,11.86z/data=!4m10!1m2!2m1!1sPlaya+Area+Brava+(Os+Alem%C3%A1ns)!3m6!1s0xd2f6176bc017bb7:0x3a4f59cf74c3d1f0!8m2!3d42.2589685!4d-8.7640667!15sCh5QbGF5YSBBcmVhIEJyYXZhIChPcyBBbGVtw6FucylaHiIccGxheWEgYXJlYSBicmF2YSBvcyBhbGVtw6Fuc5IBD25hdHVyZV9wcmVzZXJ2ZZoBI0NoWkRTVWhOTUc5blMwVkpRMEZuU1VObE1tRmhURk5CRUFF4AEA-gEECAAQRw!16s%2Fg%2F11cn6936tk?entry=ttu&g_ep=EgoyMDI1MDYxMS4wIKXMDSoASAFQAw%3D%3D', '42.2589685', '-8.7640667', 46, 15, 8),
+(36, 'Casa Damián', 'Cocina gallega, arroces, pescados, terraza frente al mar.', 'img_6851c1f000d8b5.51206950.png', '2025-06-17 00:00:00', 'https://www.google.es/maps/place/Casa+Damian/@40.3547695,-8.0713812,7z/data=!4m10!1m2!2m1!1sCasa+Dami%C3%A1n!3m6!1s0xd3228109928c04b:0x14306dd22a1cf399!8m2!3d43.5715403!4d-7.2508767!15sCgxDYXNhIERhbWnDoW5aDiIMY2FzYSBkYW1pw6FukgEKcmVzdGF1cmFudKoBZQoNL2cvMTFiYzk2ZGR2bQoNL2cvMTFid2toaHptYhABKhAiDGNhc2EgZGFtacOhbigOMh8QASIbRvXH7WRHI2cmqrKapPIp8odhUUNz3GWc2vS5MhAQAiIMY2FzYSBkYW1pw6Fu4AEA!16s%2Fg%2F11bc96ddvm?entry=ttu&g_ep=EgoyMDI1MDYxMS4wIKXMDSoASAFQAw%3D%3D', '43.5715403', '-7.2508767', 46, 15, 12),
+(37, 'Barrilete', ' Carta variada: marisco, pescados, pizzas y platos típicos.', 'img_6851c216dcd324.87626163.png', '2025-06-17 00:00:00', 'https://www.google.es/maps/place/Restaurante+Barrilete/@43.5728368,-7.2580284,15.17z/data=!4m14!1m7!3m6!1s0xd3228111cb52afb:0x36adcf10944f2628!2sRestaurante+Barrilete!8m2!3d43.5730998!4d-7.2511114!16s%2Fg%2F1tqg1mq3!3m5!1s0xd3228111cb52afb:0x36adcf10944f2628!8m2!3d43.5730998!4d-7.2511114!16s%2Fg%2F1tqg1mq3?entry=ttu&g_ep=EgoyMDI1MDYxMS4wIKXMDSoASAFQAw%3D%3D', '43.5730998', '-7.2511114', 46, 15, 1);
 
 -- --------------------------------------------------------
 
@@ -1388,6 +1390,7 @@ CREATE TABLE `post_favoritos` (
 
 INSERT INTO `post_favoritos` (`user_id`, `post_id`) VALUES
 (20, 10),
+(15, 11),
 (26, 11),
 (15, 13),
 (26, 13),
@@ -1467,12 +1470,15 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `rol_id`, `image`, `token`) VALUES
 (1, 'pepe', 'pepe@gmail.com', '$2y$10$v7TSqDjA5xdDWxdGZfAyHefvrBRaS0AZW1yQucjoAYSMzc871BPVW', 1, 'user_682e1e0f7552c3.98056303.png', NULL),
-(15, 'galepic1121', 'gona3737@gmail.com', '$2y$10$.XAUtqYJ/bYOeU8JwaQUaeGOE2WB6Zc.aeME1tEU8tPcQZxY6qHpi', 1, 'user_6842ae4ddb8047.68898657.png', NULL),
+(15, 'mauro1231231', 'gona3737@gmail.com', '$2y$10$kkbxCKfNHE.MZmBdHvbck.ztBoz.GkIrW0/d42I5IZ.NrumdD.Jty', 3, 'user_685146f35f86d7.73598296.png', NULL),
 (20, '123', '123@gmail.com', '$2y$10$U1Rfr47W.lvoZ.8e/JlA/OEPhvApsgfQVWdmPJH3.ugT3mdb40O.q', 2, 'default.png', NULL),
 (26, 'Verificar', 'taxistiraos@gmail.com', '$2y$10$qGYdw47l01cbr6yI5fp2Xe2Amb8QFcRhzRIAsMcQShWn9jYV3dWV6', 1, 'user_6832281c2684b9.31480712.png', NULL),
 (27, 'Pepe123', 'dreamfruit13@gmail.com', '$2y$10$d6mcLJ9qdQx.ZsLtuH8Rs.0PIW6Yo67AWqYFeRuKBfaN5xxJ2IBbS', 3, 'default.png', NULL),
 (28, '121212', 'gona3939@gmail.com', '$2y$10$sqh7he0avIyFhSTAOJ/L4ubmZvoWRbeg7NSFgi1NrP0RgQoepjpj6', 3, 'default.png', NULL),
-(29, 'ada', 'test@gmail.com', '$2y$10$ovKiJclq/Xqwup64zn0/Ye1deL0K1hS4RBLXXpBgzeiB7KgNyyQUq', 2, 'user_684aa15e9070b2.89454536.png', NULL);
+(29, 'ada', 'test@gmail.com', '$2y$10$ovKiJclq/Xqwup64zn0/Ye1deL0K1hS4RBLXXpBgzeiB7KgNyyQUq', 2, 'user_684aa15e9070b2.89454536.png', NULL),
+(30, 'test123', 'test@a.com', '$2y$10$zukkTtJHtFjuqBSEbl/oHeBN5tA72RGg/5lsjuJTN9wuPWV2arDLy', 2, 'default.png', NULL),
+(31, '123123', '1231213@f.f', '$2y$10$pA6F2eEz03mtrNNwp2f/Mec/dhWdk0qVZlTquBxoS5I4n9VtJGbF.', 2, 'user_684fda467a0c19.22440478.png', NULL),
+(32, 'testest', 'aaaaaaaaaaaaaaaaaaa12312312@gmail.com', '$2y$10$hcRE.sv3Dx9eUj7xck9L4uywkvglWUGfxR3wmVra75jC20R6DQBwO', 2, 'default.png', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -1558,7 +1564,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT de la tabla `cost_of_living`
@@ -1582,13 +1588,13 @@ ALTER TABLE `denuncias`
 -- AUTO_INCREMENT de la tabla `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -1606,7 +1612,7 @@ ALTER TABLE `tipo_post`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- Restricciones para tablas volcadas
