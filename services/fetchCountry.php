@@ -12,7 +12,7 @@
         $opts = [
             "http" => [
                 "method" => "GET",
-                "header" => "User-Agent: MyApp/1.0\r\nAccept-Language: en"
+                "header" => "User-Agent: MyApp/1.0\r\nAccept-Language: es"
             ]
         ];
 
