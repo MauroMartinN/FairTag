@@ -3,6 +3,7 @@ const denuncias = <?= json_encode(array_map(function($denuncia) {
     return [
         'id' => htmlspecialchars($denuncia->getId()),
         'tipo' => htmlspecialchars($denuncia->getTipo()),
+        'contenidoId' => htmlspecialchars($denuncia->getContenidoId()),
         'motivo' => nl2br(htmlspecialchars($denuncia->getMotivo())),
         'usuarioId' => htmlspecialchars($denuncia->getUsuarioId()),
         'fecha' => htmlspecialchars($denuncia->getFecha())

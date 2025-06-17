@@ -60,25 +60,30 @@ class CommentController
         $userId = $_SESSION['user_id'] ?? null;
         $commentId = $_POST['id'] ?? null;
         $comment = $this->model->obtenerPorId($commentId);
-        if (!$userId || !$comment || $comment->getUserId() != $userId) {
+        if (!$userId || !$comment || ($comment->getUserId() != $userId && $_SESSION['rol_id'] != 1)) {
             header("Location: index.php?c=User&a=perfil&v=ok");
             exit();
         }
 
-        if ($_SESSION['rol_id'] != 1) {
-            header("Location: index.php?c=Pais&a=index");
-            exit();
-        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
             $commentId = $_POST['id'];
             $postId = $_POST['post_id'];
             $this->model->eliminar($commentId);
+            $this->eliminarDenunciasConContenidoId($commentId);
             header("Location: index.php?c=Post&a=ver&id=$postId");
             exit();
         } else {
             header("Location: index.php");
             exit();
         }
+    }
+    private function eliminarDenunciasConContenidoId($contenidoId)
+    {
+        $DenunciaDAO = new DenunciaDAO();
+
+        $DenunciaDAO->eliminarDenunciasConContenidoId($contenidoId);
+        header("Location: index.php?c=Denuncia&a=listarDenuncias");
+        exit();
     }
 
     public function denunciar()
