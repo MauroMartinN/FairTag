@@ -92,6 +92,33 @@ class PaisController
         require_once '../view/footer.php';
     }
 
+    public function apiCiudad()
+    {
+        header('Content-Type: application/json');
 
+        $ciudad = $_GET['city'] ?? null;
+
+        if (!$ciudad) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Falta el parametro city']);
+            return;
+        }
+
+        try {
+            $costesDAO = new CostesDAO();
+            $datos = $costesDAO->obtenerPorCiudad($ciudad);
+
+            if ($datos) {
+                echo json_encode($datos->toArray());
+            } else {
+                http_response_code(404);
+                echo json_encode(['error' => 'Ciudad no encontrada']);
+            }
+
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Error interno', 'detalles' => $e->getMessage()]);
+        }
+    }
 
 }
